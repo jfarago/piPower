@@ -1,0 +1,44 @@
+{
+"pins": [
+    {
+        "pinNumber": 5,
+        "direction": "out",
+        "description": "Left Light Fixture"
+    },
+    {
+        "pinNumber": 6,
+        "direction": "out",
+        "description": "Right Light Fixture"
+    },
+    {
+        "pinNumber": 12,
+        "direction": "out",
+        "description": "Left Power Head"
+    },
+    {
+        "pinNumber": 13,
+        "direction": "out",
+        "description": "Right Power Head"
+    },
+    {
+        "pinNumber": 16,
+        "direction": "out",
+        "description": "Filter"
+    },
+    {
+        "pinNumber": 19,
+        "direction": "out",
+        "description": "Protein Skimmer"
+    },
+    {
+        "pinNumber": 20,
+        "direction": "out",
+        "description": "Heater"
+    },
+    {
+        "pinNumber": 21,
+        "direction": "out",
+        "description": "Auto Top Off"
+    }
+]
+}
