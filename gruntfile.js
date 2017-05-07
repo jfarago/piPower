@@ -8,16 +8,6 @@ module.exports = function(grunt) {
 
 		secret: grunt.file.readJSON('./pi_credentials.json'),
 
-		sass: {
-			compile: {
-				options: {
-					style: 'expanded'
-				},
-				files: {
-					'source/css/styles.css': 'source/css/styles.scss'
-				}
-			}
-		},
 		sftp: {
 			dev: {
 				options: {
@@ -46,26 +36,30 @@ module.exports = function(grunt) {
 				files: {
 					'./': ['dist/**/*']
 				}
-			}
+			},
+      releaseServer: {
+        options: {
+          host: '<%= secret.release.host %>',
+          username: '<%= secret.release.username %>',
+          password: '<%= secret.release.password %>',
+          path: '/home/pi/aquarium_monitor/server/',
+          srcBasePath: "src/server/",
+          showProgress: true,
+          createDirectories: true
+        },
+        files: {
+          './': ['src/server/**/*']
+        }
+      }
 		},
 		watch: {
-			live_reload: {
-				files: 'source/**/*',
-				options: {
-					livereload: true,
-				}
-			},
-			sass: {
-				files: 'source/css/**/*.scss',
-				tasks: [
-					'sass'
-				]
-
-			}
+      server: {
+        files: ['src/server/**/*'],
+        tasks: ['sftp:releaseServer']
+      }
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-ssh');
 
