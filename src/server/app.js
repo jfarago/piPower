@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require("fs");
 var os = require("os");
 var sensor = require('ds18x20');
+var auth = require('http-auth');
 
 const time = require('./time.js');
 const gpio = require('./gpio.js');
@@ -43,7 +44,14 @@ var temperatureProbes = {
   }
 };
 
+var basic = auth.basic({
+  realm: "SECRET",
+  file: __dirname + "/users.htpasswd"
+});
+
 var app = express();
+
+app.use(auth.connect(basic));
 
 app.use(express.static(path.join(__dirname, '../')));
 

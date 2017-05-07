@@ -38,7 +38,7 @@ Currently, this server supports turning gpio's on and off as well as report the 
     
 Install package dependancies
 
-    sudo npm install express ds18x20 gpio
+    sudo npm install express ds18x20 gpio http-auth
     sudo npm install -g nodemon
     
 Enable w1-gpio

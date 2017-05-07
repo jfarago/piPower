@@ -42,3 +42,4 @@ testem.log
 Thumbs.db
 
 pi_credentials.json
+/src/server/users.htpasswd
