@@ -3,27 +3,27 @@
     {
         "pinNumber": 5,
         "direction": "out",
-        "description": "Left Light Fixture"
+        "description": "White Lights"
     },
     {
         "pinNumber": 6,
         "direction": "out",
-        "description": "Right Light Fixture"
+        "description": "Blue Lights"
     },
     {
         "pinNumber": 12,
         "direction": "out",
-        "description": "Left Power Head"
+        "description": "Moon Lights"
     },
     {
         "pinNumber": 13,
         "direction": "out",
-        "description": "Right Power Head"
+        "description": "Return Pump"
     },
     {
         "pinNumber": 16,
         "direction": "out",
-        "description": "Filter"
+        "description": "Power Head"
     },
     {
         "pinNumber": 19,

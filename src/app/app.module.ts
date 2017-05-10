@@ -2,9 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AlertModule } from 'ngx-bootstrap';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+
 
 import { AppComponent } from './app.component';
+import {PiService} from "./pi.service";
 
 @NgModule({
   declarations: [
@@ -14,9 +16,11 @@ import { AppComponent } from './app.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AlertModule.forRoot()
+    ButtonsModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    PiService, {provide: PiService, useClass: PiService}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
