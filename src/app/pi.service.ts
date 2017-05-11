@@ -17,12 +17,12 @@ export class PiService {
   getOutlets():Observable<any> {
     let headers = new Headers();
     //this.createAuthorizationHeader(headers);
-    return this.http.get('http://10.0.1.4:3000/api/outlets',{headers: headers})
+    return this.http.get('api/outlets',{headers: headers})
       .map((res:Response) => res.json() || {});
   }
 
   putOutlet(outlet, state):Observable<any> {
-    return this.http.put('http://10.0.1.4:3000/api/outlets/' + outlet + '/' + state, JSON.stringify({}))
+    return this.http.put('api/outlets/' + outlet + '/' + state, JSON.stringify({}))
       .map((res:Response) => res.json() || {});
   }
 

@@ -13,11 +13,7 @@ export class AppComponent implements OnInit {
 
   title = 'piFish';
 
-  outlets = [{
-    description: "Temp",
-    value: "Off",
-    headerNum: 0
-  }];
+  outlets = [];
 
   public changeOutlet(outlet, state) {
     this.piService.putOutlet(outlet, state).subscribe(res => {
