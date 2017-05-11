@@ -13,10 +13,13 @@ export class AppComponent implements OnInit {
 
   title = 'piFish';
 
-  outlets = [];
+  outlets = [{
+    description: "Temp",
+    value: "Off",
+    headerNum: 0
+  }];
 
   public changeOutlet(outlet, state) {
-    console.log(outlet, state)
     this.piService.putOutlet(outlet, state).subscribe(res => {
       console.log(res);
     });
@@ -26,13 +29,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.piService.getOutlets().subscribe(res => {
       this.outlets = res.message.value;
-      console.log(this.outlets);
 
       for (let i = 0; i < this.outlets.length; i++) {
         this.outlets[i].value = this.outlets[i].value ? 'On' : 'Off';
       }
 
-      console.log(this.outlets)
+      console.log('outlets: ', this.outlets);
     });
 
 

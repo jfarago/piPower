@@ -18,3 +18,22 @@ body {
 
   }
 }
+
+.title {
+  border-bottom: 1px solid #337ab7;
+  background-color: #337ab7;
+  margin-top: 0;
+  padding: 10px;
+  color: white;
+}
+
+.outlet {
+  height: 38px;
+  margin: 0 20px;
+  border-bottom: 1px solid #337ab7;
+}
+
+.outlet-description {
+  height: 34px;
+  line-height: 34px;
+}

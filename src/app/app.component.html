@@ -1,17 +1,11 @@
-<h1 style="border-bottom: 1px solid #337ab7;
-    background-color: #337ab7;
-    margin-top: 0;
-    padding: 10px;
-    color: white">
+<h1 class="title">
   {{title}}
 </h1>
 <div class="container-fluid">
   <div *ngFor="let outlet of outlets" class="row">
-    <div style="height: 38px;
-    margin: 0 20px;
-    border-bottom: 1px solid #337ab7;">
+    <div class="outlet">
       <div class="col-xs-8">
-        <label style="height: 34px ; line-height: 34px;">{{outlet.description}}</label>
+        <label class="outlet-description">{{outlet.description}}</label>
       </div>
       <div class="btn-group col-xs-4">
         <label
