@@ -46,7 +46,13 @@ Enable w1-gpio
     sudo modprobe w1-gpio
     sudo nano /boot/config.txt
 
-Add to file: dtoverlay=w1-gpio	
+Add to file: dtoverlay=w1-gpio
+
+Generate SSL Cert in root of server folder
+
+    openssl genrsa 1024 > private.key
+    openssl req -new -key private.key -out cert.csr
+    openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
 
 Launch Server
 

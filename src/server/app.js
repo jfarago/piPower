@@ -4,6 +4,7 @@ var fs = require("fs");
 var os = require("os");
 var sensor = require('ds18x20');
 var auth = require('http-auth');
+var https = require('https');
 
 const time = require('./time.js');
 const gpio = require('./gpio.js');
@@ -20,7 +21,7 @@ sensor.isDriverLoaded(function(err) {
         console.log('Sensor Error: ensure you have enabled w1-gpio in /boot/config.txt');
         console.error(err);
       } else {
-        console.log(listOfDeviceIds);
+        console.log('Temperature Sensors: ', listOfDeviceIds);
       }
     });
   }
@@ -44,14 +45,18 @@ var temperatureProbes = {
   }
 };
 
-var basic = auth.basic({
+var basicAuth = auth.basic({
   realm: "SECRET",
   file: __dirname + "/users.htpasswd"
 });
 
 var app = express();
+var serverOptions = {
+  key: fs.readFileSync(__dirname + '/private.key'),
+  cert: fs.readFileSync(__dirname + '/certificate.pem')
+};
 
-//app.use(auth.connect(basic));
+app.use(auth.connect(basicAuth));
 
 app.use(express.static(path.join(__dirname, '../')));
 
@@ -64,6 +69,13 @@ app.use(function(req, res, next) {
     return res.status(200).end();
   }
   next();
+});
+
+https.createServer(serverOptions, app).listen(443, '0.0.0.0', function() {
+  var host = this.address().address;
+  var port = this.address().port;
+
+  console.log('Starting up server at https://%s:%s', host, port);
 });
 
 app
@@ -101,7 +113,7 @@ app
 
     for (var i = 0; i < outlets.length; i++) {
       if (outlets[i].headerNum == pin) {
-        console.log('Setting GPIO ' + pin + ' ' + state);
+        console.log('Setting GPIO ' + pin + ' ' + state  +  ' ' + new Date());
         outlets[i].set(parseInt(bool));
         res.send(message('Success', {
           value: state
@@ -158,13 +170,6 @@ app
         }));
       });
   });
-
-var server = app.listen(3000, '0.0.0.0', function() {
-  var host = server.address().address;
-  var port = server.address().port;
-
-  console.log('Starting up server at http://%s:%s', host, port);
-});
 
 function message(status, message) {
   return {

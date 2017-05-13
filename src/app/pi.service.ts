@@ -9,15 +9,8 @@ export class PiService {
 
   constructor(private http: Http) {}
 
-  createAuthorizationHeader(headers: Headers) {
-    headers.append('Authorization', 'Basic ' +
-      btoa('pistol:shrimp'));
-  }
-
   getOutlets():Observable<any> {
-    let headers = new Headers();
-    //this.createAuthorizationHeader(headers);
-    return this.http.get('api/outlets',{headers: headers})
+    return this.http.get('api/outlets')
       .map((res:Response) => res.json() || {});
   }
 
