@@ -1,44 +1,44 @@
 {
-"pins": [
+  "pins": [
     {
-        "pinNumber": 5,
-        "direction": "out",
-        "description": "White Lights"
+      "pinNumber": 6,
+      "direction": "out",
+      "description": "Lights"
     },
     {
-        "pinNumber": 6,
-        "direction": "out",
-        "description": "Blue Lights"
+      "pinNumber": 5,
+      "direction": "out",
+      "description": "Moon Lights"
     },
     {
-        "pinNumber": 12,
-        "direction": "out",
-        "description": "Moon Lights"
+      "pinNumber": 21,
+      "direction": "out",
+      "description": "Refugium Lights"
     },
     {
-        "pinNumber": 13,
-        "direction": "out",
-        "description": "Return Pump"
+      "pinNumber": 12,
+      "direction": "out",
+      "description": "Temperature Monitor"
     },
     {
-        "pinNumber": 16,
-        "direction": "out",
-        "description": "Power Head"
+      "pinNumber": 20,
+      "direction": "out",
+      "description": "Return Pump"
     },
     {
-        "pinNumber": 19,
-        "direction": "out",
-        "description": "Protein Skimmer"
+      "pinNumber": 13,
+      "direction": "out",
+      "description": "Power Head"
     },
     {
-        "pinNumber": 20,
-        "direction": "out",
-        "description": "Heater"
+      "pinNumber": 19,
+      "direction": "out",
+      "description": "Heater"
     },
     {
-        "pinNumber": 21,
-        "direction": "out",
-        "description": "Auto Top Off"
+      "pinNumber": 16,
+      "direction": "out",
+      "description": "Auto Top Off"
     }
-]
+  ]
 }
