@@ -37,6 +37,20 @@ module.exports = function(grunt) {
 					'./': ['dist/**/*']
 				}
 			},
+      devServer: {
+        options: {
+          host: '<%= secret.dev.host %>',
+          username: '<%= secret.dev.username %>',
+          password: '<%= secret.dev.password %>',
+          path: '/home/pi/aquarium_monitor/server/',
+          srcBasePath: "src/server/",
+          showProgress: true,
+          createDirectories: true
+        },
+        files: {
+          './': ['src/server/**/*']
+        }
+      },
       releaseServer: {
         options: {
           host: '<%= secret.release.host %>',
@@ -53,9 +67,13 @@ module.exports = function(grunt) {
       }
 		},
 		watch: {
-      server: {
+      releaseServer: {
         files: ['src/server/**/*'],
         tasks: ['sftp:releaseServer']
+      },
+      devServer: {
+        files: ['src/server/**/*'],
+        tasks: ['sftp:devServer']
       }
 		}
 	});

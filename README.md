@@ -36,9 +36,13 @@ Currently, this server supports turning gpio's on and off as well as report the 
 
     sudo git clone https://github.com/jfarago/node-berry.git folder_name
     
+Install NodeJS
+
+    http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/
+    
 Install package dependancies
 
-    sudo npm install express ds18x20 gpio http-auth
+    sudo npm install express ds18x20 gpio http-auth node-schedule
     sudo npm install -g nodemon
     
 Enable w1-gpio
@@ -48,7 +52,7 @@ Enable w1-gpio
 
 Add to file: dtoverlay=w1-gpio
 
-Generate SSL Cert in root of server folder
+Generate SSL Cert in root of server folder in project
 
     openssl genrsa 1024 > private.key
     openssl req -new -key private.key -out cert.csr

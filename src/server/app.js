@@ -6,9 +6,11 @@ var sensor = require('ds18x20');
 var auth = require('http-auth');
 var https = require('https');
 
+
 const time = require('./time.js');
 const gpio = require('./gpio.js');
 const piStats = require('./piStats.js');
+const scheduler = require('./scheduler');
 
 sensor.isDriverLoaded(function(err) {
   if (err) {
@@ -18,7 +20,7 @@ sensor.isDriverLoaded(function(err) {
 
     sensor.list(function(err, listOfDeviceIds) {
       if (err) {
-        console.log('Sensor Error: ensure you have enabled w1-gpio in /boot/config.txt');
+        console.log('Sensor Error: ensure you have enabled w1-gpio in /boot/config.txt and reboot');
         console.error(err);
       } else {
         console.log('Temperature Sensors: ', listOfDeviceIds);
@@ -29,6 +31,7 @@ sensor.isDriverLoaded(function(err) {
 
 var config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 var outlets = gpio.initiatePins(config.pins);
+var schedule = scheduler.createSchedule(config.pins, outlets);
 
 var temperatureProbes = {
   leftLight: {
@@ -113,7 +116,7 @@ app
 
     for (var i = 0; i < outlets.length; i++) {
       if (outlets[i].headerNum == pin) {
-        console.log('Setting GPIO ' + pin + ' ' + state  +  ' ' + new Date());
+        console.log('Setting ' + outlets[i].description + ' ' + state  +  ' ' + new Date());
         outlets[i].set(parseInt(bool));
         res.send(message('Success', {
           value: state

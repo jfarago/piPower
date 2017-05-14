@@ -3,17 +3,29 @@
     {
       "pinNumber": 6,
       "direction": "out",
-      "description": "Lights"
+      "description": "White Lights",
+      "schedule": {
+        "on": "0 8 * * *",
+        "off": "0 14 * * *"
+      }
     },
     {
       "pinNumber": 5,
       "direction": "out",
-      "description": "Moon Lights"
+      "description": "Blue Lights",
+      "schedule": {
+        "on": "0 5 * * *",
+        "off": "0 17 * * *"
+      }
     },
     {
       "pinNumber": 21,
       "direction": "out",
-      "description": "Refugium Lights"
+      "description": "Refugium Lights",
+      "schedule": {
+        "on": "0 17 * * *",
+        "off": "0 5 * * *"
+      }
     },
     {
       "pinNumber": 12,
