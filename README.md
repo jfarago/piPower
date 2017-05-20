@@ -92,11 +92,11 @@ Launch Server
 **API Examples**
 -
  - GET Pin Configuration
-	 - `http://<Raspberry Pi IP>:3000/api/outlets`
+	 - `https://<Raspberry Pi IP>/api/outlets`
  - GET Pin State
-	 - `http://<Raspberry Pi IP>:3000/api/outlets/:pin`
+	 - `https://<Raspberry Pi IP>/api/outlets/:pin`
  - PUT Pin State
-	 - `http://<Raspberry Pi IP>:3000/api/outlets/:pin/:state`
+	 - `https://<Raspberry Pi IP>/api/outlets/:pin/:state`
  - GET Raspberry Pi System Stats
-	 - `http://<Raspberry Pi IP>:3000/api/unit/info`
+	 - `https://<Raspberry Pi IP>/api/unit/info`
 
