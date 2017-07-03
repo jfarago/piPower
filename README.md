@@ -52,11 +52,13 @@ Enable w1-gpio
 
 Add to file: dtoverlay=w1-gpio
 
-Generate SSL Cert in root of server folder in project
+Generate SSL Cert in root of server
 
     openssl genrsa 1024 > private.key
     openssl req -new -key private.key -out cert.csr
     openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
+		
+Generate users.htpasswd file in root of server
 
 Launch Server
 
@@ -99,4 +101,21 @@ Launch Server
 	 - `https://<Raspberry Pi IP>/api/outlets/:pin/:state`
  - GET Raspberry Pi System Stats
 	 - `https://<Raspberry Pi IP>/api/unit/info`
+   
+**Set Up Dev Environment**
 
+Create pi_credentials.json for grunt scripts
+ ```
+ {
+ 	"dev": {
+ 		"host": "192.168.1.45",
+ 		"username": "pi",
+ 		"password": "letmein"
+ 	},
+ 	"release": {
+ 		"host": "192.168.1.46",
+ 		"username": "pi",
+ 		"password": "letmein"
+ 	}
+ }
+```
