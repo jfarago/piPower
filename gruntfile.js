@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 					host: '<%= secret.dev.host %>',
 					username: '<%= secret.dev.username %>',
 					password: '<%= secret.dev.password %>',
-					path: '/home/pi/aquarium_monitor/',
+					path: '/home/pi/aquarium_monitor/src/',
           srcBasePath: "dist/",
 					showProgress: true,
 					createDirectories: true
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 					host: '<%= secret.release.host %>',
 					username: '<%= secret.release.username %>',
 					password: '<%= secret.release.password %>',
-					path: '/home/pi/aquarium_monitor/',
+					path: '/home/pi/aquarium_monitor/src/',
           srcBasePath: "dist/",
 					showProgress: true,
 					createDirectories: true
@@ -81,6 +81,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-ssh');
 
-	grunt.registerTask('default', ['watch']);
+	grunt.registerTask('default', ['watch'])
+  ;
+	grunt.registerTask('deployDev', ['sftp:dev', 'sftp:devServer']);
+	grunt.registerTask('deployRelease', ['sftp:release', 'sftp:releaseServer']);
 
 };
