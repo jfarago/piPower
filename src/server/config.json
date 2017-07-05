@@ -14,8 +14,8 @@
       "direction": "out",
       "description": "Blue Lights",
       "schedule": {
-        "on": "0 5 * * *",
-        "off": "0 17 * * *"
+        "on": "0 6 * * *",
+        "off": "0 16 * * *"
       }
     },
     {
@@ -30,7 +30,7 @@
     {
       "pinNumber": 12,
       "direction": "out",
-      "description": "Temperature Monitor"
+      "description": "Protein Skimmer"
     },
     {
       "pinNumber": 20,

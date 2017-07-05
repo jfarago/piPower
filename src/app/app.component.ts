@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   constructor(private piService: PiService) {
   };
 
-  title = 'piFish';
+  title = 'fishPi';
 
   outlets = [];
 
