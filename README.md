@@ -42,8 +42,9 @@ Install NodeJS
     
 Install package dependancies
 
-    sudo npm install express ds18x20 gpio http-auth node-schedule
-    sudo npm install -g nodemon
+    sudo npm install 
+    
+Set timezone on raspberry pi
     
 Enable w1-gpio
 
