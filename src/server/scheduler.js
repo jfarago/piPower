@@ -5,14 +5,16 @@ var currentJobs = [];
 exports
   .createSchedule = createSchedule;
 
+console.log("Current time is: ", new Date());
+
 function createSchedule(config, outlets) {
   for (var i = 0; i < config.length; i++) {
     if (config[i].schedule) {
       if (config[i].schedule.on && config[i].schedule.off) {
         //create closure to have access later
         (function(outlet, config) {
-          newJob(config.schedule.on, function() {
-              console.log('Setting GPIO ' + outlet.description + ' on from scheduler ' + new Date());
+            newJob(config.schedule.on, function() {
+              console.log('Setting ' + outlet.description + ' on from scheduler ' + new Date());
               outlet.set(1);
             });
             newJob(config.schedule.off, function() {
@@ -28,7 +30,13 @@ function createSchedule(config, outlets) {
   return currentJobs;
 }
 
-function newJob(cronTime, callback) {
-  var job = schedule.scheduleJob(cronTime, callback);
+function newJob(hour, callback) {
+  var rule = new schedule.RecurrenceRule();
+
+  rule.hour = parseFloat(hour);
+  rule.minute = 0; //comment out to run every minute on the hour specified.
+
+  var job = schedule.scheduleJob(rule, callback);
+
   currentJobs.push(job);
 }

@@ -5,8 +5,8 @@
       "direction": "out",
       "description": "White Lights",
       "schedule": {
-        "on": "0 16 * * *",
-        "off": "0 22 * * *"
+        "on": "12",
+        "off": "18"
       }
     },
     {
@@ -14,8 +14,8 @@
       "direction": "out",
       "description": "Blue Lights",
       "schedule": {
-        "on": "0 14 * * *",
-        "off": "0 0 * * *"
+        "on": "10",
+        "off": "20"
       }
     },
     {
@@ -23,8 +23,8 @@
       "direction": "out",
       "description": "Refugium Lights",
       "schedule": {
-        "on": "0 1 * * *",
-        "off": "0 13 * * *"
+        "on": "21",
+        "off": "9"
       }
     },
     {
