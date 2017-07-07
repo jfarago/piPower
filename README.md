@@ -34,7 +34,7 @@ Currently, this server supports turning gpio's on and off as well as report the 
 -
  Clone the repository to a directory on your pi 
 
-    sudo git clone https://github.com/jfarago/node-berry.git folder_name
+    sudo git clone https://github.com/jfarago/fishPi.git folder_name
     
 Install NodeJS
 
