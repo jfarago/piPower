@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 					host: '<%= secret.dev.host %>',
 					username: '<%= secret.dev.username %>',
 					password: '<%= secret.dev.password %>',
-					path: '/home/pi/aquarium_monitor/src/',
+					path: '/home/pi/fish_pi/src/',
           srcBasePath: "dist/",
 					showProgress: true,
 					createDirectories: true
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 					host: '<%= secret.release.host %>',
 					username: '<%= secret.release.username %>',
 					password: '<%= secret.release.password %>',
-					path: '/home/pi/aquarium_monitor/src/',
+					path: '/home/pi/fish_pi/src/',
           srcBasePath: "dist/",
 					showProgress: true,
 					createDirectories: true
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
           host: '<%= secret.dev.host %>',
           username: '<%= secret.dev.username %>',
           password: '<%= secret.dev.password %>',
-          path: '/home/pi/aquarium_monitor/server/',
+          path: '/home/pi/fish_pi/server/',
           srcBasePath: "src/server/",
           showProgress: true,
           createDirectories: true
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
           host: '<%= secret.release.host %>',
           username: '<%= secret.release.username %>',
           password: '<%= secret.release.password %>',
-          path: '/home/pi/aquarium_monitor/server/',
+          path: '/home/pi/fish_pi/server/',
           srcBasePath: "src/server/",
           showProgress: true,
           createDirectories: true

@@ -1,99 +1,135 @@
 # FishPi
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.2.
+FishPi is a node server for the raspberry pi that offers gpio manipulation from a web interface and/or a predefined schedule. It also supports ds18x20 sensors over i2c but but I need to add support for setting the sensor id's in the config file.
 
-## Development server
+My current setup is a pi zero with an 8 channel relay wired to 8 outlets. The web interface creates an on/off button for every pin in the config file. I also wired up the i2c pins to a 3.5mm headphone jack so I could plug in temperature sensors until my heart is content, via headphone splitter.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+By default, each pin is set to the on position when the server starts. This is the safest operation for my aquarium setup as equipment is usually on.
 
-## Code scaffolding
+Although I have tailored this project as an aquarium controller, it could be used for any project that you want GPIO manipulation from the web. It would be very easy to use this for a DIY smart power strip.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
+## Setup
 
-## Build
+### Raspberry Pi configuration (Raspbian):
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+##### Install git
 
-## Running unit tests
+	sudo apt-get update
+	sudo apt-get install git
+	
+##### Install NodeJS
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+[http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/
+]()
 
-## Running end-to-end tests
+###### Clean up install node packages
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+	rm -rf node-v4.0.0-linux-armv6l node-v4.0.0-linux-armv6l.tar.gz 
 
-## Further help
+##### Set timezone on raspberry pi
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-
-Currently, this server supports turning gpio's on and off as well as report the pi systems stats. i2c is implemented to read ds18x20 temperature sensors but I need to add support for sensor id's in the config file.
-
-**Installation on Raspbian:**
--
- Clone the repository to a directory on your pi 
-
-    sudo git clone https://github.com/jfarago/fishPi.git folder_name
+[http://www.geeklee.co.uk/update-time-zone-on-raspberry-pi-with-raspbian/]()
     
-Install NodeJS
-
-    http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/
-    
-Install package dependancies
-
-    sudo npm install 
-    
-Set timezone on raspberry pi
-    
-Enable w1-gpio
+##### Enable w1-gpio
 
     sudo modprobe w1-gpio
     sudo nano /boot/config.txt
 
-Add to file: dtoverlay=w1-gpio
+###### Add this line to bottom of file:
 
-Generate SSL Cert in root of server
+	dtoverlay=w1-gpio
+	
+##### Reboot
+	
+	sudo reboot now
+    
+### Set Up Dev Environment on computer
 
-    openssl genrsa 1024 > private.key
-    openssl req -new -key private.key -out cert.csr
-    openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
-		
-Generate users.htpasswd file in root of server
+##### Clone the repository to a directory on your pi 
 
-Launch Server
+    sudo git clone https://github.com/jfarago/fishPi.git fishPi
+    
+##### Install package dependancies
 
-    npm start
+    cd fishPi/
+    sudo npm install
+    
+##### Create dist package
+    
+	ng build --prod
+	
+##### Set up pi credentials for grunt scripts
 
-**Pin Configuration File Example**
--
-    {
-	"pins": [
-		{
-			"pinNumber": 5,
-			"direction": "out",
-			"description": "Outlet 1"
+Create pi_credentials.json for grunt scripts and put it in the same folder as the gruntfile.js
+	
+	{
+		"dev": {
+			"host": "192.168.1.45",
+			"username": "pi",
+			"password": "letmein"
 		},
-		{
-			"pinNumber": 6,
-			"direction": "out",
-			"description": "Outlet 2"
-		},
-		{
-			"pinNumber": 12,
-			"direction": "out",
-			"description": "Outlet 3"
-		},
-		{
-			"pinNumber": 13,
-			"direction": "out",
-			"description": "Outlet 4"
+		"release": {
+			"host": "192.168.1.46",
+			"username": "pi",
+			"password": "letmein"
 		}
-	]
-    }
+	}
+	
+I set this up to support two pi's, one for deployment and one for development. If you just want to push the code fill out the release section wityh your pi's credentials.
+	
+##### Install grunt cli
+	
+	npm install grunt-cli -g
+	
+##### Push server package to pi
 
-**API Examples**
--
+	grunt deployRelease
+	
+### Raspberry Pi Server Setup
+
+##### Install node dependencies
+
+	cd ~/fish_pi/
+	npm install ds18x20 express gpio http-auth node-schedule
+
+##### Generate SSL Cert in root of server
+
+	cd server
+	openssl genrsa 1024 > private.key
+	openssl req -new -key private.key -out cert.csr
+	openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
+		
+##### Generate users.htpasswd file in root of server
+
+	htpasswd -c users.htpasswd admin
+
+##### Set up your pin configuration
+
+Modify server/config.json file to set up the pins you needs.
+
+##### Launch Server
+
+    sudo node ~/fish_pi/server/app.js
+    
+Navigate to raspberry pi ip.
+
+## Modifications
+
+###### Node server changes
+
+* Makes changes
+* Run grunt sftp:releaseServer
+* Restart server on pi
+
+###### Angular app changes
+* Make changes
+* Run ng build --prod
+* Run grunt sftp:release
+* Restart server on pi
+
+
+
+## Server
  - GET Pin Configuration
 	 - `https://<Raspberry Pi IP>/api/outlets`
  - GET Pin State
@@ -102,21 +138,3 @@ Launch Server
 	 - `https://<Raspberry Pi IP>/api/outlets/:pin/:state`
  - GET Raspberry Pi System Stats
 	 - `https://<Raspberry Pi IP>/api/unit/info`
-   
-**Set Up Dev Environment**
-
-Create pi_credentials.json for grunt scripts
- ```
- {
- 	"dev": {
- 		"host": "192.168.1.45",
- 		"username": "pi",
- 		"password": "letmein"
- 	},
- 	"release": {
- 		"host": "192.168.1.46",
- 		"username": "pi",
- 		"password": "letmein"
- 	}
- }
-```
