@@ -53,6 +53,12 @@ var basicAuth = auth.basic({
   file: __dirname + "/users.htpasswd"
 });
 
+setInterval(function() {
+  // Keep alive to prevent pi from sleeping on old version of node.
+  // Issue was stopping the scheduler from firing commands.
+  // https://github.com/nodejs/node/issues/4262
+}, 300000);
+
 var app = express();
 var serverOptions = {
   key: fs.readFileSync(__dirname + '/private.key'),
