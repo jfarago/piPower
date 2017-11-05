@@ -38,6 +38,8 @@ Although I have tailored this project as an aquarium controller, it could be use
 ###### Add this line to bottom of file:
 
 	dtoverlay=w1-gpio
+  
+Save and exit
 	
 ##### Reboot
 	
