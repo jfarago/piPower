@@ -9,41 +9,6 @@ By default, each pin is set to the on position when the server starts. This is t
 Although I have tailored this project as an aquarium controller, it could be used for any project that you want GPIO manipulation from the web. It would be very easy to use this for a DIY smart power strip.
 
 ## Setup
-
-### Raspberry Pi configuration (Raspbian):
-
-##### Install git
-
-	sudo apt-get update
-	sudo apt-get install git
-	
-##### Install NodeJS
-
-[http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/
-]()
-
-###### Clean up install node packages
-
-	rm -rf node-v4.0.0-linux-armv6l node-v4.0.0-linux-armv6l.tar.gz 
-
-##### Set timezone on raspberry pi
-
-[http://www.geeklee.co.uk/update-time-zone-on-raspberry-pi-with-raspbian/]()
-    
-##### Enable w1-gpio
-
-    sudo modprobe w1-gpio
-    sudo nano /boot/config.txt
-
-###### Add this line to bottom of file:
-
-	dtoverlay=w1-gpio
-  
-Save and exit
-	
-##### Reboot
-	
-	sudo reboot now
     
 ### Set Up Dev Environment on computer
 
@@ -86,6 +51,39 @@ I set this up to support two pi's, one for deployment and one for development. I
 ##### Push server package to pi
 
 	grunt deployRelease
+	
+### Raspberry Pi configuration (Raspbian):
+
+##### Install git
+
+	sudo apt-get update
+	sudo apt-get install git
+	
+##### Install NodeJS
+
+[http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/
+]()
+
+###### Clean up install node packages
+
+	rm -rf node-v4.0.0-linux-armv6l node-v4.0.0-linux-armv6l.tar.gz 
+
+##### Set timezone on raspberry pi
+
+[http://www.geeklee.co.uk/update-time-zone-on-raspberry-pi-with-raspbian/]()
+    
+##### Enable w1-gpio
+
+    sudo modprobe w1-gpio
+    sudo nano /boot/config.txt
+
+###### Add this line to bottom of file:
+
+	dtoverlay=w1-gpio
+	
+##### Reboot
+	
+	sudo reboot now
 	
 ### Raspberry Pi Server Setup
 
