@@ -11,6 +11,7 @@ Although I have tailored this project as an aquarium controller, it could be use
 <p align="center">
   <img width="800" src="https://i.imgur.com/EgLEloc.jpg">
   <img width="800" src="https://i.imgur.com/UR46gYA.jpg">
+  <img width="300" src="https://i.imgur.com/laRh66M.jpg">
 </p>
 
 ## Setup
