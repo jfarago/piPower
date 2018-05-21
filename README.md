@@ -8,6 +8,11 @@ By default, each pin is set to the on position when the server starts. This is t
 
 Although I have tailored this project as an aquarium controller, it could be used for any project that you want GPIO manipulation from the web. It would be very easy to use this for a DIY smart power strip.
 
+<p align="center">
+  <img width="800" src="https://i.imgur.com/EgLEloc.jpg">
+  <img width="800" src="https://i.imgur.com/UR46gYA.jpg">
+</p>
+
 ## Setup
     
 ### Set Up Dev Environment on computer
