@@ -15,10 +15,75 @@ Although I have tailored this project as an aquarium controller, it could be use
 </p>
 
 ## Setup
+	
+### Raspberry Pi configuration (Raspbian):
+
+##### Install git
+
+	sudo apt-get update
+	sudo apt-get install git
+	
+##### Install NodeJS
+
+[http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/
+]()
+
+###### Clean up install node packages
+
+	rm -rf node-v4.0.0-linux-armv6l node-v4.0.0-linux-armv6l.tar.gz 
+
+##### Set timezone on raspberry pi
+
+[http://www.geeklee.co.uk/update-time-zone-on-raspberry-pi-with-raspbian/]()
     
+##### Enable w1-gpio
+
+    sudo modprobe w1-gpio
+    sudo nano /boot/config.txt
+
+###### Add this line to bottom of file:
+
+	dtoverlay=w1-gpio
+	
+##### Reboot
+	
+	sudo reboot now
+	
+### Raspberry Pi Server Setup
+
+##### Clone the repository
+
+    sudo git clone https://github.com/jfarago/fishPi.git fishPi
+
+##### Install node dependencies
+
+	cd ~/fish_pi/
+	npm install ds18x20 express gpio http-auth node-schedule
+
+##### Generate SSL Cert in root of server
+
+	cd server
+	openssl genrsa 1024 > private.key
+	openssl req -new -key private.key -out cert.csr
+	openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
+		
+##### Generate users.htpasswd file in root of server
+
+	htpasswd -c users.htpasswd admin
+
+##### Set up your pin configuration
+
+Modify server/config.json file to set up the pins you needs.
+
+##### Launch Server
+
+    sudo node ~/fish_pi/server/app.js
+    
+Navigate to raspberry pi ip.
+
 ### Set Up Dev Environment on computer
 
-##### Clone the repository to a directory on your pi 
+##### Clone the repository
 
     sudo git clone https://github.com/jfarago/fishPi.git fishPi
     
@@ -57,67 +122,6 @@ I set this up to support two pi's, one for deployment and one for development. I
 ##### Push server package to pi
 
 	grunt deployRelease
-	
-### Raspberry Pi configuration (Raspbian):
-
-##### Install git
-
-	sudo apt-get update
-	sudo apt-get install git
-	
-##### Install NodeJS
-
-[http://blog.wia.io/installing-node-js-v4-0-0-on-a-raspberry-pi/
-]()
-
-###### Clean up install node packages
-
-	rm -rf node-v4.0.0-linux-armv6l node-v4.0.0-linux-armv6l.tar.gz 
-
-##### Set timezone on raspberry pi
-
-[http://www.geeklee.co.uk/update-time-zone-on-raspberry-pi-with-raspbian/]()
-    
-##### Enable w1-gpio
-
-    sudo modprobe w1-gpio
-    sudo nano /boot/config.txt
-
-###### Add this line to bottom of file:
-
-	dtoverlay=w1-gpio
-	
-##### Reboot
-	
-	sudo reboot now
-	
-### Raspberry Pi Server Setup
-
-##### Install node dependencies
-
-	cd ~/fish_pi/
-	npm install ds18x20 express gpio http-auth node-schedule
-
-##### Generate SSL Cert in root of server
-
-	cd server
-	openssl genrsa 1024 > private.key
-	openssl req -new -key private.key -out cert.csr
-	openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
-		
-##### Generate users.htpasswd file in root of server
-
-	htpasswd -c users.htpasswd admin
-
-##### Set up your pin configuration
-
-Modify server/config.json file to set up the pins you needs.
-
-##### Launch Server
-
-    sudo node ~/fish_pi/server/app.js
-    
-Navigate to raspberry pi ip.
 
 ## Modifications
 
