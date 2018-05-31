@@ -148,3 +148,23 @@ I set this up to support two pi's, one for deployment and one for development. I
 	 - `https://<Raspberry Pi IP>/api/outlets/:pin/:state`
  - GET Raspberry Pi System Stats
 	 - `https://<Raspberry Pi IP>/api/unit/info`
+   
+## Extras
+
+###### Run server when pi boots
+
+```
+sudo nano /etc/rc.local
+```
+
+Add line under "# By default this script does nothing."
+
+```
+/usr/bin/sudo -u pi sudo /usr/local/bin/forever /home/pi/fishPi/server/app.js >>/home/pi/fishPi/server/output.log 2>>/home/pi/fishPi/server/error.log
+```
+
+Reboot
+```
+sudo reboot
+```
+
