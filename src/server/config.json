@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "Fish Pi",
-    "path": "/home/pi/fishPi/"
+    "title": "Pi Power",
+    "path": "/home/pi/piPower/"
   },
   "pins": [
     {
