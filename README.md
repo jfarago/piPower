@@ -57,7 +57,7 @@ Although I have tailored this project as an aquarium controller, it could be use
 
 ##### Install node dependencies
 
-	cd ~/fish_pi/
+	cd fishPi/dist/
 	npm install ds18x20 express gpio http-auth node-schedule
 
 ##### Generate SSL Cert in root of server
@@ -77,7 +77,7 @@ Modify server/config.json file to set up the pins you needs.
 
 ##### Launch Server
 
-    sudo node ~/fish_pi/server/app.js
+    sudo node ~/fishPi/dist/server/app.js
     
 Navigate to raspberry pi ip.
 
