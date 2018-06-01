@@ -151,7 +151,7 @@ I set this up to support two pi's, one for deployment and one for development. I
    
 ## Extras
 
-###### Run server when pi boots
+#### Run server when pi boots
 
 ```
 sudo nano /etc/rc.local
