@@ -85,7 +85,7 @@ Navigate to https://raspberry-pi-ip-or-hostname
 
 ##### Clone the repository
 
-    sudo git clone https://github.com/jfarago/piPower.git fishPi
+    sudo git clone https://github.com/jfarago/piPower.git piPower
     
 ##### Install package dependancies
 
