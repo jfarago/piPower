@@ -79,7 +79,7 @@ Modify server/config.json file to set up the pins you needs.
 
     sudo node ~/fishPi/dist/server/app.js
     
-Navigate to raspberry pi ip.
+Navigate to https://raspberry-pi-ip-or-hostname
 
 ### Set Up Dev Environment on computer
 
