@@ -11,8 +11,7 @@ export class AppComponent implements OnInit {
   constructor(private piService: PiService) {
   };
 
-  title = 'fishPi';
-
+  title = '';
   outlets = [];
 
   public changeOutlet(outlet, state) {
@@ -23,6 +22,10 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
+    this.piService.getAppConfig().subscribe(res => {
+      this.title = res.message.value.title;
+    });
+
     this.piService.getOutlets().subscribe(res => {
       this.outlets = res.message.value;
 

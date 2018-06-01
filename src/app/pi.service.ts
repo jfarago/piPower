@@ -19,5 +19,9 @@ export class PiService {
       .map((res:Response) => res.json() || {});
   }
 
+  getAppConfig():Observable<any> {
+    return this.http.get('api/app-config')
+      .map((res:Response) => res.json() || {});
+  }
 
 }
