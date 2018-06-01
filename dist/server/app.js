@@ -92,6 +92,12 @@ app
     res.redirect('index.html');
   })
 
+  .get('/api/app-config', function(req, res) {
+    res.send(message('Success', {
+      value: config.app
+    }));
+  })
+
   .get('/api/outlets', function(req, res) {
     res.send(message('Success', {
       value: outlets

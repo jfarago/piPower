@@ -52,7 +52,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AppComponent = (function () {
     function AppComponent(piService) {
         this.piService = piService;
-        this.title = 'fishPi';
+        this.title = '';
         this.outlets = [];
     }
     ;
@@ -63,6 +63,9 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.piService.getAppConfig().subscribe(function (res) {
+            _this.title = res.message.value.title;
+        });
         this.piService.getOutlets().subscribe(function (res) {
             _this.outlets = res.message.value;
             for (var i = 0; i < _this.outlets.length; i++) {
@@ -171,6 +174,10 @@ var PiService = (function () {
     };
     PiService.prototype.putOutlet = function (outlet, state) {
         return this.http.put('api/outlets/' + outlet + '/' + state, JSON.stringify({}))
+            .map(function (res) { return res.json() || {}; });
+    };
+    PiService.prototype.getAppConfig = function () {
+        return this.http.get('api/app-config')
             .map(function (res) { return res.json() || {}; });
     };
     return PiService;
