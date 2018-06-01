@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Canna Pi",
+    "title": "Fish Pi",
     "path": "/home/pi/fishPi/"
   },
   "pins": [
