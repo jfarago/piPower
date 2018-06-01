@@ -3,9 +3,8 @@
  */
 
 module.exports = function(grunt) {
-
 	grunt.initConfig({
-
+    config: grunt.file.readJSON('./src/server/config.json'),
 		secret: grunt.file.readJSON('./pi_credentials.json'),
 
 		sftp: {
@@ -14,8 +13,7 @@ module.exports = function(grunt) {
 					host: '<%= secret.dev.host %>',
 					username: '<%= secret.dev.username %>',
 					password: '<%= secret.dev.password %>',
-					path: '/home/pi/fishPi/dist/src/',
-          srcBasePath: "dist/",
+					path: '<%= config.app.path %>',
 					showProgress: true,
 					createDirectories: true
 				},
@@ -28,52 +26,23 @@ module.exports = function(grunt) {
 					host: '<%= secret.release.host %>',
 					username: '<%= secret.release.username %>',
 					password: '<%= secret.release.password %>',
-					path: '/home/pi/fishPi/dist/src/',
-          srcBasePath: "dist/",
+					path: '<%= config.app.path %>',
 					showProgress: true,
 					createDirectories: true
 				},
 				files: {
 					'./': ['dist/**/*']
 				}
-			},
-      devServer: {
-        options: {
-          host: '<%= secret.dev.host %>',
-          username: '<%= secret.dev.username %>',
-          password: '<%= secret.dev.password %>',
-          path: '/home/pi/fishPi/dist/server/',
-          srcBasePath: "src/server/",
-          showProgress: true,
-          createDirectories: true
-        },
-        files: {
-          './': ['src/server/**/*']
-        }
-      },
-      releaseServer: {
-        options: {
-          host: '<%= secret.release.host %>',
-          username: '<%= secret.release.username %>',
-          password: '<%= secret.release.password %>',
-          path: '/home/pi/fishPi/dist/server/',
-          srcBasePath: "src/server/",
-          showProgress: true,
-          createDirectories: true
-        },
-        files: {
-          './': ['src/server/**/*']
-        }
-      }
+			}
 		},
 		watch: {
-      releaseServer: {
-        files: ['src/server/**/*'],
-        tasks: ['sftp:releaseServer']
+      release: {
+        files: ['dist/**/*'],
+        tasks: ['sftp:release']
       },
-      devServer: {
-        files: ['src/server/**/*'],
-        tasks: ['sftp:devServer']
+      dev: {
+        files: ['dist/**/*'],
+        tasks: ['sftp:dev']
       }
 		}
 	});

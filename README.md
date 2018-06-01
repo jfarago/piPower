@@ -57,8 +57,8 @@ Although I have tailored this project as an aquarium controller, it could be use
 
 ##### Install node dependencies
 
-	cd fishPi/dist/
-	npm install ds18x20 express gpio http-auth node-schedule
+	cd fishPi/dist/server
+	npm install
 
 ##### Generate SSL Cert in root of server
 
