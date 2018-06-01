@@ -160,7 +160,7 @@ sudo nano /etc/rc.local
 Add line under "# By default this script does nothing."
 
 ```
-/usr/bin/sudo -u pi sudo /usr/local/bin/forever /home/pi/fishPi/server/app.js >>/home/pi/fishPi/server/output.log 2>>/home/pi/fishPi/server/error.log
+/usr/bin/sudo -u pi sudo /usr/local/bin/forever /home/pi/fishPi/dist/server/app.js >>/home/pi/fishPi/dist/server/output.log 2>>/home/pi/fishPi/dist/server/error.log
 ```
 
 Reboot
