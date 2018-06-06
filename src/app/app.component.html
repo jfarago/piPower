@@ -1,9 +1,9 @@
-<h1 class="title">
+<h1 class="title" [ngStyle]="style.header">
   {{title}}
 </h1>
 <div class="container-fluid">
   <div *ngFor="let outlet of outlets" class="row">
-    <div class="outlet">
+    <div class="outlet" [ngStyle]="style.row">
       <div class="col-xs-6">
         <label class="outlet-description">{{outlet.description}}</label>
       </div>
