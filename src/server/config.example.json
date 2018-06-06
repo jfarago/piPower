@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Pi Power",
-    "path": "/home/pi/fishPi/",
+    "path": "/home/pi/piPower/",
     "color": "#FFA500"
   },
   "pins": [

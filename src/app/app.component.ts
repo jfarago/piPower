@@ -8,11 +8,21 @@ import {PiService} from './pi.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private piService: PiService) {
+  title = '';
+  color = '#ffffff';
+  outlets = [];
+  style = {
+    header: {
+      background: this.color,
+      'border-bottom': ''
+    },
+    row: {
+      'border-bottom': ''
+    },
   };
 
-  title = '';
-  outlets = [];
+  constructor(private piService: PiService) {
+  };
 
   public changeOutlet(outlet, state) {
     this.piService.putOutlet(outlet, state).subscribe(res => {
@@ -24,6 +34,14 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.piService.getAppConfig().subscribe(res => {
       this.title = res.message.value.title;
+      this.color = res.message.value.color;
+      this.style.header = {
+        background: this.color,
+        'border-bottom': '1px solid ' + this.color
+      };
+      this.style.row = {
+        'border-bottom': '1px solid ' + this.color
+      };
     });
 
     this.piService.getOutlets().subscribe(res => {
@@ -35,7 +53,5 @@ export class AppComponent implements OnInit {
 
       console.log('outlets: ', this.outlets);
     });
-
-
   }
 }

@@ -45,3 +45,4 @@ cert.csr
 certificate.pem
 private.key
 /src/server/users.htpasswd
+/src/server/config.json

@@ -73,7 +73,7 @@ Although, I have used this to build a aquarium monitor, it would be very easy to
 
 ##### Set up your pin configuration
 
-Modify server/config.json file to set up the pins you needs.
+Copy server/config.example.json file and create a server/config.json file
 
 ##### Launch Server
 

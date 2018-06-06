@@ -20,7 +20,7 @@ webpackEmptyAsyncContext.id = "./src/$$_gendir lazy recursive";
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"title\">\n  {{title}}\n</h1>\n<div class=\"container-fluid\">\n  <div *ngFor=\"let outlet of outlets\" class=\"row\">\n    <div class=\"outlet\">\n      <div class=\"col-xs-6\">\n        <label class=\"outlet-description\">{{outlet.description}}</label>\n      </div>\n      <div class=\"col-xs-6\">\n        <div class=\"btn-group pull-right\">\n          <label\n            class=\"btn btn-primary off-button\"\n            btnRadio=\"Off\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 0)\">Off</label>\n          <label\n            class=\"btn btn-primary on-button\"\n            btnRadio=\"On\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 1)\">On</label>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
+module.exports = "<h1 class=\"title\" [ngStyle]=\"style.header\">\n  {{title}}\n</h1>\n<div class=\"container-fluid\">\n  <div *ngFor=\"let outlet of outlets\" class=\"row\">\n    <div class=\"outlet\" [ngStyle]=\"style.row\">\n      <div class=\"col-xs-6\">\n        <label class=\"outlet-description\">{{outlet.description}}</label>\n      </div>\n      <div class=\"col-xs-6\">\n        <div class=\"btn-group pull-right\">\n          <label\n            class=\"btn btn-primary off-button\"\n            btnRadio=\"Off\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 0)\">Off</label>\n          <label\n            class=\"btn btn-primary on-button\"\n            btnRadio=\"On\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 1)\">On</label>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
 
 /***/ }),
 
@@ -53,7 +53,17 @@ var AppComponent = (function () {
     function AppComponent(piService) {
         this.piService = piService;
         this.title = '';
+        this.color = '#ffffff';
         this.outlets = [];
+        this.style = {
+            header: {
+                background: this.color,
+                'border-bottom': ''
+            },
+            row: {
+                'border-bottom': ''
+            },
+        };
     }
     ;
     AppComponent.prototype.changeOutlet = function (outlet, state) {
@@ -65,6 +75,14 @@ var AppComponent = (function () {
         var _this = this;
         this.piService.getAppConfig().subscribe(function (res) {
             _this.title = res.message.value.title;
+            _this.color = res.message.value.color;
+            _this.style.header = {
+                background: _this.color,
+                'border-bottom': '1px solid ' + _this.color
+            };
+            _this.style.row = {
+                'border-bottom': '1px solid ' + _this.color
+            };
         });
         this.piService.getOutlets().subscribe(function (res) {
             _this.outlets = res.message.value;
