@@ -11,6 +11,10 @@ export class AppComponent implements OnInit {
   title = '';
   color = '#ffffff';
   outlets = [];
+  ambient = {
+    temperature: 0,
+    humidity: 0
+  }
   style = {
     header: {
       background: this.color,
@@ -51,7 +55,14 @@ export class AppComponent implements OnInit {
         this.outlets[i].value = this.outlets[i].value ? 'On' : 'Off';
       }
 
-      console.log('outlets: ', this.outlets);
+      console.log('Outlets: ', this.outlets);
+    });
+
+    this.piService.getAmbientTemperature().subscribe(res => {
+      this.ambient.temperature = res.message.temperature;
+      this.ambient.humidity = res.message.humidity;
+      console.log('Ambient Temperature: ', this.ambient.temperature);
+      console.log('Ambient Humidity: ', this.ambient.humidity);
     });
   }
 }

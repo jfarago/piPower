@@ -24,4 +24,9 @@ export class PiService {
       .map((res:Response) => res.json() || {});
   }
 
+  getAmbientTemperature():Observable<any> {
+    return this.http.get('api/ambient')
+      .map((res:Response) => res.json() || {});
+  }
+
 }

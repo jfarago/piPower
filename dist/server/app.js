@@ -13,6 +13,27 @@ const gpio = require('./gpio.js');
 const piStats = require('./piStats.js');
 const scheduler = require('./scheduler');
 
+const config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
+const outlets = gpio.initiatePins(config.pins);
+const schedule = scheduler.createSchedule(config.pins, outlets);
+
+const temperatureProbes = {
+  leftLight: {
+    id: '28-000006700b67',
+    temperature: ''
+  }
+};
+
+const basicAuth = auth.basic({
+  realm: "SECRET",
+  file: __dirname + "/users.htpasswd"
+});
+
+const app = express();
+const serverOptions = {
+  key: fs.readFileSync(__dirname + '/private.key'),
+  cert: fs.readFileSync(__dirname + '/certificate.pem')
+};
 
 dhtSensor.read(22, 4, function (err, temperature, humidity) {
   if (err) {
@@ -42,41 +63,11 @@ sensor.isDriverLoaded(function (err) {
   }
 });
 
-var config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
-var outlets = gpio.initiatePins(config.pins);
-var schedule = scheduler.createSchedule(config.pins, outlets);
-
-var temperatureProbes = {
-  leftLight: {
-    id: '28-000006700b67',
-    temperature: ''
-  },
-  rightLight: {
-    id: '28-0000066e8a8a',
-    temperature: ''
-  },
-  aquarium: {
-    id: '28-0000068a4a89',
-    temperature: ''
-  }
-};
-
-var basicAuth = auth.basic({
-  realm: "SECRET",
-  file: __dirname + "/users.htpasswd"
-});
-
 setInterval(function () {
   // Keep alive to prevent pi from sleeping on old version of node.
   // Issue was stopping the scheduler from firing commands.
   // https://github.com/nodejs/node/issues/4262
 }, 300000);
-
-var app = express();
-var serverOptions = {
-  key: fs.readFileSync(__dirname + '/private.key'),
-  cert: fs.readFileSync(__dirname + '/certificate.pem')
-};
 
 app.use(auth.connect(basicAuth));
 
@@ -94,8 +85,8 @@ app.use(function (req, res, next) {
 });
 
 https.createServer(serverOptions, app).listen(443, '0.0.0.0', function () {
-  var host = this.address().address;
-  var port = this.address().port;
+  const host = this.address().address;
+  const port = this.address().port;
 
   console.log('Starting up server at https://%s:%s', host, port);
 });
@@ -166,6 +157,20 @@ app
       res.send(message('Success', {
         value: temperatureProbes
       }));
+    });
+  })
+
+  .get('/api/ambient', function(req, res) {
+    dhtSensor.read(22, 4, function (err, temperature, humidity) {
+      if (err) {
+        console.log('Something went wrong loading the DHT22 driver:', err);
+      } else {
+        res.send(message('Success', {
+          temperature: temperature.toFixed(1),
+          humidity: humidity.toFixed(1)
+        }));
+
+      }
     });
   })
 
