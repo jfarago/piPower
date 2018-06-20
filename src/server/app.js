@@ -84,7 +84,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-https.createServer(serverOptions, app).listen(443, '0.0.0.0', function () {
+https.createServer(serverOptions, app).listen(config.app.port, '0.0.0.0', function () {
   const host = this.address().address;
   const port = this.address().port;
 
