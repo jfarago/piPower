@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', ['watch'])
   ;
-	grunt.registerTask('deployDev', ['sftp:dev', 'sftp:devServer']);
-	grunt.registerTask('deployRelease', ['sftp:release', 'sftp:releaseServer']);
+	grunt.registerTask('deployDev', ['sftp:dev']);
+	grunt.registerTask('deployRelease', ['sftp:release']);
 
 };
