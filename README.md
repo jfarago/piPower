@@ -40,6 +40,17 @@ Although, I have used this to build a aquarium monitor, it would be very easy to
 
     sudo modprobe w1-gpio
     sudo nano /boot/config.txt
+    
+##### Install DHT11/22 supporting library
+
+	wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
+	tar zxvf bcm2835-1.46.tar.gz
+	cd bcm2835-1.46
+	./configure
+	make
+	sudo make check
+	sudo make install
+
 
 ###### Add this line to bottom of file:
 

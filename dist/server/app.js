@@ -5,6 +5,7 @@ var os = require("os");
 var sensor = require('ds18x20');
 var auth = require('http-auth');
 var https = require('https');
+var dhtSensor = require('node-dht-sensor');
 
 
 const time = require('./time.js');
@@ -12,18 +13,30 @@ const gpio = require('./gpio.js');
 const piStats = require('./piStats.js');
 const scheduler = require('./scheduler');
 
-sensor.isDriverLoaded(function(err) {
-  if (err) {
-    console.log('something went wrong loading the driver:', err);
-  } else {
-    console.log('Driver is Loaded');
 
-    sensor.list(function(err, listOfDeviceIds) {
+dhtSensor.read(22, 4, function (err, temperature, humidity) {
+  if (err) {
+    console.log('Something went wrong loading the DHT22 driver:', err);
+  } else {
+    console.log('DHT11/DHT22 Driver is Loaded');
+    console.log('Temp: ' + temperature.toFixed(1) + '°C, ' +
+      'Humidity: ' + humidity.toFixed(1) + '%'
+    );
+  }
+});
+
+sensor.isDriverLoaded(function (err) {
+  if (err) {
+    console.log('Something went wrong loading the DS18B20 driver:', err);
+  } else {
+    console.log('DS18B20 Driver is Loaded');
+
+    sensor.list(function (err, listOfDeviceIds) {
       if (err) {
-        console.log('Sensor Error: ensure you have enabled w1-gpio in /boot/config.txt and reboot');
+        console.log('DS18B20 Sensor Error: ensure you have enabled w1-gpio in /boot/config.txt and reboot');
         console.error(err);
       } else {
-        console.log('Temperature Sensors: ', listOfDeviceIds);
+        console.log('DS18B20 Temperature Sensors: ', listOfDeviceIds);
       }
     });
   }
@@ -53,7 +66,7 @@ var basicAuth = auth.basic({
   file: __dirname + "/users.htpasswd"
 });
 
-setInterval(function() {
+setInterval(function () {
   // Keep alive to prevent pi from sleeping on old version of node.
   // Issue was stopping the scheduler from firing commands.
   // https://github.com/nodejs/node/issues/4262
@@ -69,7 +82,7 @@ app.use(auth.connect(basicAuth));
 
 app.use(express.static(path.join(__dirname, '../src/')));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods", "GET,PUT");
@@ -80,7 +93,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-https.createServer(serverOptions, app).listen(443, '0.0.0.0', function() {
+https.createServer(serverOptions, app).listen(443, '0.0.0.0', function () {
   var host = this.address().address;
   var port = this.address().port;
 
@@ -88,23 +101,23 @@ https.createServer(serverOptions, app).listen(443, '0.0.0.0', function() {
 });
 
 app
-  .get('/', function(req, res) {
+  .get('/', function (req, res) {
     res.redirect('index.html');
   })
 
-  .get('/api/app-config', function(req, res) {
+  .get('/api/app-config', function (req, res) {
     res.send(message('Success', {
       value: config.app
     }));
   })
 
-  .get('/api/outlets', function(req, res) {
+  .get('/api/outlets', function (req, res) {
     res.send(message('Success', {
       value: outlets
     }));
   })
 
-  .get('/api/outlets/:pin', function(req, res) {
+  .get('/api/outlets/:pin', function (req, res) {
     var pin = req.params.pin;
 
     for (var i = 0; i < outlets.length; i++) {
@@ -121,14 +134,14 @@ app
     }
   })
 
-  .put('/api/outlets/:pin/:bool', function(req, res) {
+  .put('/api/outlets/:pin/:bool', function (req, res) {
     var pin = req.params.pin;
     var bool = req.params.bool;
     var state = bool == 1 ? 'On' : 'Off';
 
     for (var i = 0; i < outlets.length; i++) {
       if (outlets[i].headerNum == pin) {
-        console.log('Setting ' + outlets[i].description + ' ' + state  +  ' ' + new Date());
+        console.log('Setting ' + outlets[i].description + ' ' + state + ' ' + new Date());
         outlets[i].set(parseInt(bool));
         res.send(message('Success', {
           value: state
@@ -141,8 +154,8 @@ app
     }
   })
 
-  .get('/api/temperature_probes', function(req, res) {
-    sensor.getAll(function(err, probeObj) {
+  .get('/api/temperature_probes', function (req, res) {
+    sensor.getAll(function (err, probeObj) {
       for (thermometer in temperatureProbes) {
         for (probe in probeObj) {
           if (temperatureProbes[thermometer].id == probe) {
@@ -156,10 +169,10 @@ app
     });
   })
 
-  .get('/api/unit/info', function(req, res) {
+  .get('/api/unit/info', function (req, res) {
 
     getCpuTemp()
-      .then(function(temp) {
+      .then(function (temp) {
         res.send(message('Success', {
           value: {
             "os": {
