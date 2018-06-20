@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   ambient = {
     temperature: 0,
     humidity: 0
-  }
+  };
   style = {
     header: {
       background: this.color,
@@ -23,6 +23,9 @@ export class AppComponent implements OnInit {
     row: {
       'border-bottom': ''
     },
+    temp: {
+      color: this.color
+    }
   };
 
   constructor(private piService: PiService) {
@@ -46,6 +49,10 @@ export class AppComponent implements OnInit {
       this.style.row = {
         'border-bottom': '1px solid ' + this.color
       };
+
+      this.style.temp = {
+        color: this.color
+      };
     });
 
     this.piService.getOutlets().subscribe(res => {
@@ -59,7 +66,7 @@ export class AppComponent implements OnInit {
     });
 
     this.piService.getAmbientTemperature().subscribe(res => {
-      this.ambient.temperature = res.message.temperature;
+      this.ambient.temperature = Math.round((res.message.temperature * 9 / 5 + 32) * 10) / 10 ;
       this.ambient.humidity = res.message.humidity;
       console.log('Ambient Temperature: ', this.ambient.temperature);
       console.log('Ambient Humidity: ', this.ambient.humidity);

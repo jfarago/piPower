@@ -169,7 +169,6 @@ app
           temperature: temperature.toFixed(1),
           humidity: humidity.toFixed(1)
         }));
-
       }
     });
   })
