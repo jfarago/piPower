@@ -86,6 +86,8 @@ Although, I have used this to build a aquarium monitor, it would be very easy to
 
 Copy server/config.example.json file and create a server/config.json file
 
+`cp config.example.json config.json`
+
 ##### Launch Server
 
     sudo node ~/piPower/dist/server/app.js
