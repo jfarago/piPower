@@ -109,6 +109,13 @@ Navigate to https://raspberry-pi-ip-or-hostname
     
 	ng build --prod
 	
+##### Create proxy config
+
+The proxy is to be able to serve the webpages locally, but point to the pi for server requests
+    
+	cp proxy.conf.example.json proxy.conf.json
+	
+	
 ##### Set up pi credentials for grunt scripts
 
 Create pi_credentials.json for grunt scripts and put it in the same folder as the gruntfile.js

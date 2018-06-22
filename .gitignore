@@ -46,3 +46,4 @@ certificate.pem
 private.key
 /src/server/users.htpasswd
 /src/server/config.json
+proxy.conf.json
