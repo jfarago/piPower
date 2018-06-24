@@ -31,6 +31,19 @@ export class AppComponent implements OnInit {
   constructor(private piService: PiService) {
   };
 
+
+  /**
+   * Chart Config
+   */
+  public lineChartData: Array<any> = [
+    {data: [], label: 'Temperature'},
+    {data: [], label: 'Humidity'}
+  ];
+  public lineChartLabels: Array<any> = [];
+  public lineChartOptions: any = {};
+  public lineChartLegend: boolean = true;
+  public lineChartType: string = 'line';
+
   public changeOutlet(outlet, state) {
     this.piService.putOutlet(outlet, state).subscribe(res => {
       console.log(res);
@@ -39,6 +52,7 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.piService.getAppConfig().subscribe(res => {
       this.title = res.message.value.title;
       this.color = res.message.value.color;
@@ -66,10 +80,26 @@ export class AppComponent implements OnInit {
     });
 
     this.piService.getAmbientTemperature().subscribe(res => {
-      this.ambient.temperature = Math.round((res.message.temperature * 9 / 5 + 32) * 10) / 10 ;
+      this.ambient.temperature = Math.round((res.message.temperature * 9 / 5 + 32) * 10) / 10;
       this.ambient.humidity = res.message.humidity;
-      console.log('Ambient Temperature: ', this.ambient.temperature);
-      console.log('Ambient Humidity: ', this.ambient.humidity);
+
+
+      this.lineChartData[0].data = [...this.lineChartData[0].data, this.ambient.temperature];
+      this.lineChartData[1].data.push(...this.lineChartData[1].data, this.ambient.humidity);
+      this.lineChartLabels = [...this.lineChartLabels, ''];
     });
+
+    setInterval(() => {
+      this.piService.getAmbientTemperature().subscribe(res => {
+        this.ambient.temperature = Math.round((res.message.temperature * 9 / 5 + 32) * 10) / 10;
+        this.ambient.humidity = res.message.humidity;
+
+        this.lineChartData[0].data = [...this.lineChartData[0].data, this.ambient.temperature];
+        this.lineChartData[1].data.push(...this.lineChartData[1].data, this.ambient.humidity);
+        this.lineChartLabels = [...this.lineChartLabels, ''];
+
+
+      });
+    }, 5000);
   }
 }
