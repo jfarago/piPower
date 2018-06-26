@@ -29,9 +29,10 @@ export class AppComponent implements OnInit {
     }
   };
 
+  oldAmbientLog = [];
+
   constructor(private piService: PiService) {
   };
-
 
   /**
    * Chart Config
@@ -53,7 +54,6 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.piService.getAppConfig().subscribe(res => {
       this.title = res.message.value.title;
       this.color = res.message.value.color;
@@ -84,6 +84,7 @@ export class AppComponent implements OnInit {
       this.ambient.temperature = Math.round((res.message.temperature * 9 / 5 + 32) * 10) / 10;
       this.ambient.humidity = res.message.humidity;
       this.ambient.log = res.message.log;
+      this.oldAmbientLog = this.ambient.log;
 
       const tempLog = this.ambient.log.map(line => line.temperature);
       const humidityLog = this.ambient.log.map(line => line.humidity);
@@ -102,12 +103,13 @@ export class AppComponent implements OnInit {
         const tempLog = this.ambient.log.map(line => line.temperature);
         const humidityLog = this.ambient.log.map(line => line.humidity);
 
-        this.lineChartData[0].data = tempLog;
-        this.lineChartData[1].data = humidityLog;
-        this.lineChartLabels = new Array(tempLog.length);
+        if (this.oldAmbientLog.length < this.ambient.log.length) {
+          this.oldAmbientLog = this.ambient.log;
+          this.lineChartData[0].data = tempLog;
+          this.lineChartData[1].data = humidityLog;
+          this.lineChartLabels = new Array(tempLog.length);
+        }
       });
-
-
     }, 5000);
   }
 }
