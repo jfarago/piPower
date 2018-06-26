@@ -8,11 +8,14 @@ By default, each pin is set to the on position when the server starts. This is t
 
 Although, I have used this to build a aquarium monitor, it would be very easy to use this for a DIY smart power strip.
 
+![Logo](https://i.imgur.com/UR46gYA.jpg)
+
+
 <p align="center">
   <img width="800" src="https://i.imgur.com/EgLEloc.jpg">
-  <img width="800" src="https://i.imgur.com/UR46gYA.jpg">
   <img width="300" src="https://i.imgur.com/laRh66M.jpg">
 </p>
+
 
 ## Setup
 	
