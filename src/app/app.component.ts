@@ -13,7 +13,8 @@ export class AppComponent implements OnInit {
   outlets = [];
   ambient = {
     temperature: 0,
-    humidity: 0
+    humidity: 0,
+    log: []
   };
   style = {
     header: {
@@ -82,24 +83,31 @@ export class AppComponent implements OnInit {
     this.piService.getAmbientTemperature().subscribe(res => {
       this.ambient.temperature = Math.round((res.message.temperature * 9 / 5 + 32) * 10) / 10;
       this.ambient.humidity = res.message.humidity;
+      this.ambient.log = res.message.log;
 
+      const tempLog = this.ambient.log.map(line => line.temperature);
+      const humidityLog = this.ambient.log.map(line => line.humidity);
 
-      this.lineChartData[0].data = [...this.lineChartData[0].data, this.ambient.temperature];
-      this.lineChartData[1].data.push(...this.lineChartData[1].data, this.ambient.humidity);
-      this.lineChartLabels = [...this.lineChartLabels, ''];
+      this.lineChartData[0].data = tempLog;
+      this.lineChartData[1].data = humidityLog;
+      this.lineChartLabels = new Array(tempLog.length);
     });
 
     setInterval(() => {
       this.piService.getAmbientTemperature().subscribe(res => {
         this.ambient.temperature = Math.round((res.message.temperature * 9 / 5 + 32) * 10) / 10;
         this.ambient.humidity = res.message.humidity;
+        this.ambient.log = res.message.log;
 
-        this.lineChartData[0].data = [...this.lineChartData[0].data, this.ambient.temperature];
-        this.lineChartData[1].data.push(...this.lineChartData[1].data, this.ambient.humidity);
-        this.lineChartLabels = [...this.lineChartLabels, ''];
+        const tempLog = this.ambient.log.map(line => line.temperature);
+        const humidityLog = this.ambient.log.map(line => line.humidity);
 
-
+        this.lineChartData[0].data = tempLog;
+        this.lineChartData[1].data = humidityLog;
+        this.lineChartLabels = new Array(tempLog.length);
       });
+
+
     }, 5000);
   }
 }

@@ -35,6 +35,8 @@ const serverOptions = {
   cert: fs.readFileSync(__dirname + '/certificate.pem')
 };
 
+var dhtSensorHistory = [];
+
 dhtSensor.read(22, 4, function (err, temperature, humidity) {
   if (err) {
     console.log('Something went wrong loading the DHT22 driver:', err);
@@ -43,6 +45,8 @@ dhtSensor.read(22, 4, function (err, temperature, humidity) {
     console.log('Temp: ' + temperature.toFixed(1) + '°C, ' +
       'Humidity: ' + humidity.toFixed(1) + '%'
     );
+    dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
+    console.log("Temperature log:", dhtSensorHistory);
   }
 });
 
@@ -68,6 +72,23 @@ setInterval(function () {
   // Issue was stopping the scheduler from firing commands.
   // https://github.com/nodejs/node/issues/4262
 }, 300000);
+
+setInterval(function() {
+  dhtSensor.read(22, 4, function (err, temperature, humidity) {
+    if (err) {
+      console.log('Something went wrong when trying to log temperature:', err);
+    } else {
+      console.log("Logging Temperature to log");
+
+      //Limit log to 1 day
+      if(dhtSensorHistory.length >= 24) {
+        dhtSensorHistory.shift();
+      }
+
+      dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
+    }
+  });
+}, 3600000);
 
 app.use(auth.connect(basicAuth));
 
@@ -167,7 +188,8 @@ app
       } else {
         res.send(message('Success', {
           temperature: temperature.toFixed(1),
-          humidity: humidity.toFixed(1)
+          humidity: humidity.toFixed(1),
+          log: dhtSensorHistory
         }));
       }
     });
