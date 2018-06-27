@@ -9,9 +9,9 @@
   <accordion>
     <accordion-group class="text-center h1" heading="{{ambient.temperature}}°F / {{ambient.humidity}}%">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-xs-12">
           <div style="display: block;">
-            <canvas baseChart height="200"
+            <canvas baseChart
                     [datasets]="lineChartData"
                     [options]="lineChartOptions"
                     [legend]="lineChartLegend"
