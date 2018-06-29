@@ -62,6 +62,10 @@ Accessories
     sudo modprobe w1-gpio
     sudo nano /boot/config.txt
     
+###### Add this line to bottom of file:
+
+	dtoverlay=w1-gpio
+    
 ##### Install DHT11/22 supporting library (I cannot get this to work on the pi zero)
 
 	wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
@@ -71,11 +75,6 @@ Accessories
 	make
 	sudo make check
 	sudo make install
-
-
-###### Add this line to bottom of file:
-
-	dtoverlay=w1-gpio
 	
 ##### Reboot
 	
