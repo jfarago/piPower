@@ -37,9 +37,9 @@ const serverOptions = {
 
 var dhtSensorHistory = [];
 
-dhtSensor.read(22, 4, function (err, temperature, humidity) {
+dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
   if (err) {
-    console.log('Something went wrong loading the DHT22 driver:', err);
+    console.log('Something went wrong when reading DHT Sensor:', err);
   } else {
     console.log('DHT11/DHT22 Driver is Loaded');
     console.log('Temp: ' + temperature.toFixed(1) + '°C, ' +
@@ -74,9 +74,11 @@ setInterval(function () {
 }, 300000);
 
 setInterval(function() {
-  dhtSensor.read(22, 4, function (err, temperature, humidity) {
+  dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+    console.log(config.dhtSensorPin)
+
     if (err) {
-      console.log('Something went wrong when trying to log temperature:', err);
+      console.log('Something went wrong when reading DHT Sensor:', err);
     } else {
       console.log("Logging Temperature to log");
 
@@ -182,7 +184,7 @@ app
   })
 
   .get('/api/ambient', function(req, res) {
-    dhtSensor.read(22, 4, function (err, temperature, humidity) {
+    dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
       if (err) {
         console.log('Something went wrong loading the DHT22 driver:', err);
       } else {

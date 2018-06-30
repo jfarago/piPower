@@ -35,14 +35,18 @@ const serverOptions = {
   cert: fs.readFileSync(__dirname + '/certificate.pem')
 };
 
-dhtSensor.read(22, 4, function (err, temperature, humidity) {
+var dhtSensorHistory = [];
+
+dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
   if (err) {
-    console.log('Something went wrong loading the DHT22 driver:', err);
+    console.log('Something went wrong when reading DHT Sensor:', err);
   } else {
     console.log('DHT11/DHT22 Driver is Loaded');
     console.log('Temp: ' + temperature.toFixed(1) + '°C, ' +
       'Humidity: ' + humidity.toFixed(1) + '%'
     );
+    dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
+    console.log("Temperature log:", dhtSensorHistory);
   }
 });
 
@@ -69,6 +73,25 @@ setInterval(function () {
   // https://github.com/nodejs/node/issues/4262
 }, 300000);
 
+setInterval(function() {
+  dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+    console.log(config.dhtSensorPin)
+
+    if (err) {
+      console.log('Something went wrong when reading DHT Sensor:', err);
+    } else {
+      console.log("Logging Temperature to log");
+
+      //Limit log to 1 day
+      if(dhtSensorHistory.length >= 24) {
+        dhtSensorHistory.shift();
+      }
+
+      dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
+    }
+  });
+}, 3600000);
+
 app.use(auth.connect(basicAuth));
 
 app.use(express.static(path.join(__dirname, '../src/')));
@@ -84,7 +107,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-https.createServer(serverOptions, app).listen(443, '0.0.0.0', function () {
+https.createServer(serverOptions, app).listen(config.app.port, '0.0.0.0', function () {
   const host = this.address().address;
   const port = this.address().port;
 
@@ -161,13 +184,14 @@ app
   })
 
   .get('/api/ambient', function(req, res) {
-    dhtSensor.read(22, 4, function (err, temperature, humidity) {
+    dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
       if (err) {
         console.log('Something went wrong loading the DHT22 driver:', err);
       } else {
         res.send(message('Success', {
           temperature: temperature.toFixed(1),
-          humidity: humidity.toFixed(1)
+          humidity: humidity.toFixed(1),
+          log: dhtSensorHistory
         }));
       }
     });
