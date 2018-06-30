@@ -16,6 +16,24 @@ Although, I have used this to build a aquarium monitor, it would be very easy to
   <img width="300" src="https://i.imgur.com/laRh66M.jpg">
 </p>
 
+## BOM
+
+Note: Links are sourced for 2 day Amazon Prime shipping. Can be found on ebay for about half the price.
+
+* [Enclosure](https://www.amazon.com/gp/product/B00INGRK4W/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1) - $14
+* [Relay](https://www.amazon.com/gp/product/B00R77PN1A/ref=oh_aui_detailpage_o03_s00?ie=UTF8&psc=1) - $11
+* [Power Cable Input](https://www.amazon.com/gp/product/B01M1088S2/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1) - $7
+* [Outlets](https://www.amazon.com/gp/product/B01M3URWIT/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1) - $8
+
+
+Accessories
+
+* [DHT22 Ambient Temp/Humidity Sensor](https://www.amazon.com/gp/product/B0795F19W6/ref=oh_aui_detailpage_o07_s00?ie=UTF8&psc=1) - $10
+* [DS18B20 Waterproof Temp Probes](https://www.amazon.com/gp/product/B00CHEZ250/ref=oh_aui_search_detailpage?ie=UTF8&psc=1) - $8
+* [Humidifier Mister](https://www.amazon.com/gp/product/B00PAK245E/ref=oh_aui_detailpage_o05_s00?ie=UTF8&psc=1) - $9
+* [Humidifier Fan](https://www.amazon.com/gp/product/B00N1Y4RLU/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1) - $9
+
+
 
 ## Setup
 	
@@ -44,7 +62,11 @@ Although, I have used this to build a aquarium monitor, it would be very easy to
     sudo modprobe w1-gpio
     sudo nano /boot/config.txt
     
-##### Install DHT11/22 supporting library
+###### Add this line to bottom of file:
+
+	dtoverlay=w1-gpio
+    
+##### Install DHT11/22 supporting library (I cannot get this to work on the pi zero)
 
 	wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
 	tar zxvf bcm2835-1.46.tar.gz
@@ -53,11 +75,6 @@ Although, I have used this to build a aquarium monitor, it would be very easy to
 	make
 	sudo make check
 	sudo make install
-
-
-###### Add this line to bottom of file:
-
-	dtoverlay=w1-gpio
 	
 ##### Reboot
 	
