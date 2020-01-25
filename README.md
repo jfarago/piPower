@@ -44,7 +44,7 @@ Accessories
   I recommend using [PiBakery](https://www.pibakery.org/), its very easy to use. I normally
   configure the wifi, hostname, password, reboot, and then i ssh into it fo the next steps.
 
-##### Install git
+##### Install git.
 
 	sudo apt-get update
 	sudo apt-get install git
