@@ -65,7 +65,7 @@ Accessories
     
   Install latest version of node
   
-    $ nvm install node
+    $ nvm install 8
 
 ##### Set timezone on raspberry pi
 
@@ -91,6 +91,7 @@ Select localisation options > change timezone > geographical area > timezone.
 	$ make
 	$ sudo make check
 	$ sudo make install
+	$ rm -rf bcm2835-1.46.tar.gz
 	
 ##### Reboot
 	
@@ -105,30 +106,31 @@ Select localisation options > change timezone > geographical area > timezone.
 ##### Install node dependencies
 
 	$ cd pi-power/dist/server
+	$ sudo chown -R $(whoami) ./
 	$ npm install
 
 ##### Generate SSL Cert in root of server
 
-	$ cd server
 	$ openssl genrsa 1024 > private.key
 	$ openssl req -new -key private.key -out cert.csr
 	$ openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
 		
-##### Generate users.htpasswd file in root of server
+##### Generate users.htpasswd file in root of server (this is the password to login to the web)
 
+	$ sudo apt-get install apache2-utils
 	$ htpasswd -c users.htpasswd admin
 
 ##### Set up your pin configuration
 
 Copy server/config.example.json file and create a server/config.json file
 
-`cp config.example.json config.json`
+    $ cp config.example.json config.json
 
 ##### Launch Server
 
     $ sudo node ~/piPower/dist/server/app.js
     
-Navigate to https://raspberry-pi-ip-or-hostname
+Navigate to https://<raspberry-pi-ip>:3000
 
 ### Set Up Dev Environment on computer
 
@@ -139,11 +141,11 @@ Navigate to https://raspberry-pi-ip-or-hostname
 ##### Install package dependancies
 
     $ cd piPower/
-    $ sudo npm install
+    $ npm install
     
 ##### Create dist package
     
-	$ ng build --prod
+	$ npm run build
 	
 ##### Create proxy config
 
@@ -175,16 +177,14 @@ I set this up to support two pi's, one for deployment and one for development. I
 	
 	$ npm install grunt-cli -g
 	
-##### Push server package to pi
-
-	$ grunt deployRelease
+##### Deploy using filezilla or cyberduck
 
 ## Modifications
 
 ###### App changes
 * Make changes
-* Run ng build --prod
-* Run grunt sftp:dev
+* Run npm run build
+* copy dist folder to raspberry pi
 * Restart server on pi
 
 
