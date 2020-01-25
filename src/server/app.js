@@ -5,7 +5,7 @@ var os = require("os");
 var sensor = require('ds18x20');
 var auth = require('http-auth');
 var https = require('https');
-var dhtSensor = require('node-dht-sensor');
+//var dhtSensor = require('node-dht-sensor');
 
 
 const time = require('./time.js');
@@ -37,7 +37,7 @@ const serverOptions = {
 
 var dhtSensorHistory = [];
 
-dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+/*dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
   if (err) {
     console.log('Something went wrong when reading DHT Sensor:', err);
   } else {
@@ -48,7 +48,7 @@ dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
     dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
     console.log("Temperature log:", dhtSensorHistory);
   }
-});
+});*/
 
 sensor.isDriverLoaded(function (err) {
   if (err) {
@@ -74,7 +74,7 @@ setInterval(function () {
 }, 300000);
 
 setInterval(function() {
-  dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+  /*dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
     console.log(config.dhtSensorPin)
 
     if (err) {
@@ -89,7 +89,7 @@ setInterval(function() {
 
       dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
     }
-  });
+  });*/
 }, 3600000);
 
 app.use(auth.connect(basicAuth));
@@ -184,7 +184,7 @@ app
   })
 
   .get('/api/ambient', function(req, res) {
-    dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+    /*dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
       if (err) {
         console.log('Something went wrong loading the DHT22 driver:', err);
       } else {
@@ -194,7 +194,7 @@ app
           log: dhtSensorHistory
         }));
       }
-    });
+    });*/
   })
 
   .get('/api/unit/info', function (req, res) {
