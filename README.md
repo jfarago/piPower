@@ -44,15 +44,12 @@ Accessories
   I recommend using [PiBakery](https://www.pibakery.org/), its very easy to use. I normally
   configure the wifi, hostname, password, reboot, and then i ssh into it fo the next steps.
 
-##### Install git.
+##### Install git
 
 	sudo apt-get update
 	sudo apt-get install git
 	
-##### Install NodeJS - Need to update this to use nvm becuase of sudo permissions issues
-
-    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-    sudo apt install -y nodejs
+##### Install NodeJS via [NVM](https://github.com/blobsmith/raspberryTestNode/wiki/Node.js-installation-with-nvm-on-Raspberry-pi)
 
 
 ##### Set timezone on raspberry pi
