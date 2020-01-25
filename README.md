@@ -44,24 +44,39 @@ Accessories
   I recommend using [PiBakery](https://www.pibakery.org/), its very easy to use. I normally
   configure the wifi, hostname, password, reboot, and then i ssh into it fo the next steps.
 
+##### Install updates
+
+    $ sudo apt update -y && sudo apt upgrade -y
+
 ##### Install git
 
-	sudo apt-get update
-	sudo apt-get install git
+    $ sudo apt-get install git
 	
-##### Install NodeJS via [NVM](https://github.com/blobsmith/raspberryTestNode/wiki/Node.js-installation-with-nvm-on-Raspberry-pi)
+##### Install NodeJS via NVM
 
+    $ git clone https://github.com/creationix/nvm.git ~/.nvm
+    $ sudo echo "source ~/.nvm/nvm.sh" >> ~/.bashrc && sudo echo "source ~/.nvm/nvm.sh" >> ~/.profile
+
+  Exit all terminal sessions and open new one
+  
+  Test to see if install worked
+  
+    $ nvm --version
+    
+  Install latest version of node
+  
+    $ nvm install node
 
 ##### Set timezone on raspberry pi
 
-    sudo raspi-config
+    $ sudo raspi-config
     
 Select localisation options > change timezone > geographical area > timezone.
     
 ##### Enable w1-gpio
 
-    sudo modprobe w1-gpio
-    sudo nano /boot/config.txt
+    $ sudo modprobe w1-gpio
+    $ sudo nano /boot/config.txt
     
 ###### Add this line to bottom of file:
 
@@ -69,39 +84,39 @@ Select localisation options > change timezone > geographical area > timezone.
 	    
 ##### Install DHT11/22 supporting library (I cannot get this to work on the pi zero)
 
-	wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
-	tar zxvf bcm2835-1.46.tar.gz
-	cd bcm2835-1.46
-	./configure
-	make
-	sudo make check
-	sudo make install
+	$ wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
+	$ tar zxvf bcm2835-1.46.tar.gz
+	$ cd bcm2835-1.46
+	$ ./configure
+	$ make
+	$ sudo make check
+	$ sudo make install
 	
 ##### Reboot
 	
-	sudo reboot now
+	$ sudo reboot now
 	
 ### Raspberry Pi Server Setup
 
 ##### Clone the repository
 
-    sudo git clone https://github.com/jfarago/piPower.git pi-power
+    $ sudo git clone https://github.com/jfarago/piPower.git pi-power
 
 ##### Install node dependencies
 
-	cd pi-power/dist/server
-	npm install
+	$ cd pi-power/dist/server
+	$ npm install
 
 ##### Generate SSL Cert in root of server
 
-	cd server
-	openssl genrsa 1024 > private.key
-	openssl req -new -key private.key -out cert.csr
-	openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
+	$ cd server
+	$ openssl genrsa 1024 > private.key
+	$ openssl req -new -key private.key -out cert.csr
+	$ openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
 		
 ##### Generate users.htpasswd file in root of server
 
-	htpasswd -c users.htpasswd admin
+	$ htpasswd -c users.htpasswd admin
 
 ##### Set up your pin configuration
 
@@ -111,7 +126,7 @@ Copy server/config.example.json file and create a server/config.json file
 
 ##### Launch Server
 
-    sudo node ~/piPower/dist/server/app.js
+    $ sudo node ~/piPower/dist/server/app.js
     
 Navigate to https://raspberry-pi-ip-or-hostname
 
@@ -119,22 +134,22 @@ Navigate to https://raspberry-pi-ip-or-hostname
 
 ##### Clone the repository
 
-    sudo git clone https://github.com/jfarago/piPower.git piPower
+    $ sudo git clone https://github.com/jfarago/piPower.git piPower
     
 ##### Install package dependancies
 
-    cd piPower/
-    sudo npm install
+    $ cd piPower/
+    $ sudo npm install
     
 ##### Create dist package
     
-	ng build --prod
+	$ ng build --prod
 	
 ##### Create proxy config
 
 The proxy is to be able to serve the webpages locally, but point to the pi for server requests
     
-	cp proxy.conf.example.json proxy.conf.json
+	$ cp proxy.conf.example.json proxy.conf.json
 	
 	
 ##### Set up pi credentials for grunt scripts
@@ -158,11 +173,11 @@ I set this up to support two pi's, one for deployment and one for development. I
 	
 ##### Install grunt cli
 	
-	npm install grunt-cli -g
+	$ npm install grunt-cli -g
 	
 ##### Push server package to pi
 
-	grunt deployRelease
+	$ grunt deployRelease
 
 ## Modifications
 
@@ -191,17 +206,17 @@ I set this up to support two pi's, one for deployment and one for development. I
 #### Run server when pi boots
 
 ```
-sudo nano /etc/rc.local
+$ sudo nano /etc/rc.local
 ```
 
 Add line under "# By default this script does nothing."
 
 ```
-/usr/bin/sudo -u pi sudo /usr/local/bin/forever /home/pi/piPower/dist/server/app.js >>/home/pi/piPower/dist/server/output.log 2>>/home/pi/piPower/dist/server/error.log
+$ /usr/bin/sudo -u pi sudo /usr/local/bin/forever /home/pi/piPower/dist/server/app.js >>/home/pi/piPower/dist/server/output.log 2>>/home/pi/piPower/dist/server/error.log
 ```
 
 Reboot
 ```
-sudo reboot
+$ sudo reboot
 ```
 
