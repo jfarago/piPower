@@ -5,7 +5,7 @@ var os = require("os");
 var sensor = require('ds18x20');
 var auth = require('http-auth');
 var https = require('https');
-//var dhtSensor = require('node-dht-sensor');
+var dhtSensor = require('node-dht-sensor');
 
 
 const time = require('./time.js');
@@ -37,18 +37,21 @@ const serverOptions = {
 
 var dhtSensorHistory = [];
 
-/*dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+// 22 is sensor type, not pin
+dhtSensor.read(config.dhtType, config.dhtSensorPin, function (err, temperature, humidity) {
+  console.log("DHT Sensor pin is: " + config.dhtSensorPin);
+  console.log("DHT Type is (11/22): " + config.dhtType);
   if (err) {
     console.log('Something went wrong when reading DHT Sensor:', err);
   } else {
     console.log('DHT11/DHT22 Driver is Loaded');
-    console.log('Temp: ' + temperature.toFixed(1) + '°C, ' +
+    console.log('Temp: ' + (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100 + '°F, ' +
       'Humidity: ' + humidity.toFixed(1) + '%'
     );
     dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
     console.log("Temperature log:", dhtSensorHistory);
   }
-});*/
+});
 
 sensor.isDriverLoaded(function (err) {
   if (err) {
@@ -74,7 +77,7 @@ setInterval(function () {
 }, 300000);
 
 setInterval(function() {
-  dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+  dhtSensor.read(config.dhtType, config.dhtSensorPin, function (err, temperature, humidity) {
     console.log(config.dhtSensorPin)
 
     if (err) {
@@ -184,9 +187,9 @@ app
   })
 
   .get('/api/ambient', function(req, res) {
-    /*dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+    dhtSensor.read(config.dhtType, config.dhtSensorPin, function (err, temperature, humidity) {
       if (err) {
-        console.log('Something went wrong loading the DHT22 driver:', err);
+        console.log('Something went wrong loading the DHT driver:', err);
       } else {
         res.send(message('Success', {
           temperature: temperature.toFixed(1),
@@ -194,7 +197,7 @@ app
           log: dhtSensorHistory
         }));
       }
-    });*/
+    });
   })
 
   .get('/api/unit/info', function (req, res) {
@@ -209,7 +212,7 @@ app
               "platform": os.platform(),
               "release": os.release()
             },
-            "uptime": formatTime(os.uptime()),
+            "uptime": time.formatTime(os.uptime()),
             "hostname": os.hostname(),
             "performance": {
               "cpu": os.cpus(),

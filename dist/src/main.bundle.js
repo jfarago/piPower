@@ -56,6 +56,8 @@ var map = {
 	"./dv.js": "./node_modules/moment/locale/dv.js",
 	"./el": "./node_modules/moment/locale/el.js",
 	"./el.js": "./node_modules/moment/locale/el.js",
+	"./en-SG": "./node_modules/moment/locale/en-SG.js",
+	"./en-SG.js": "./node_modules/moment/locale/en-SG.js",
 	"./en-au": "./node_modules/moment/locale/en-au.js",
 	"./en-au.js": "./node_modules/moment/locale/en-au.js",
 	"./en-ca": "./node_modules/moment/locale/en-ca.js",
@@ -94,6 +96,8 @@ var map = {
 	"./fr.js": "./node_modules/moment/locale/fr.js",
 	"./fy": "./node_modules/moment/locale/fy.js",
 	"./fy.js": "./node_modules/moment/locale/fy.js",
+	"./ga": "./node_modules/moment/locale/ga.js",
+	"./ga.js": "./node_modules/moment/locale/ga.js",
 	"./gd": "./node_modules/moment/locale/gd.js",
 	"./gd.js": "./node_modules/moment/locale/gd.js",
 	"./gl": "./node_modules/moment/locale/gl.js",
@@ -117,6 +121,8 @@ var map = {
 	"./is": "./node_modules/moment/locale/is.js",
 	"./is.js": "./node_modules/moment/locale/is.js",
 	"./it": "./node_modules/moment/locale/it.js",
+	"./it-ch": "./node_modules/moment/locale/it-ch.js",
+	"./it-ch.js": "./node_modules/moment/locale/it-ch.js",
 	"./it.js": "./node_modules/moment/locale/it.js",
 	"./ja": "./node_modules/moment/locale/ja.js",
 	"./ja.js": "./node_modules/moment/locale/ja.js",
@@ -132,6 +138,8 @@ var map = {
 	"./kn.js": "./node_modules/moment/locale/kn.js",
 	"./ko": "./node_modules/moment/locale/ko.js",
 	"./ko.js": "./node_modules/moment/locale/ko.js",
+	"./ku": "./node_modules/moment/locale/ku.js",
+	"./ku.js": "./node_modules/moment/locale/ku.js",
 	"./ky": "./node_modules/moment/locale/ky.js",
 	"./ky.js": "./node_modules/moment/locale/ky.js",
 	"./lb": "./node_modules/moment/locale/lb.js",
@@ -289,7 +297,7 @@ webpackEmptyAsyncContext.id = "./src/$$_gendir lazy recursive";
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"title\" [ngStyle]=\"style.header\">\n  {{title}}\n</h1>\n\n\n\n<div class=\"container-fluid\">\n\n  <accordion>\n    <accordion-group class=\"text-center h1\" heading=\"{{ambient.temperature}}°F / {{ambient.humidity}}%\">\n      <div class=\"row\">\n        <div class=\"col-xs-12\">\n          <div style=\"display: block;\">\n            <canvas baseChart\n                    [datasets]=\"lineChartData\"\n                    [options]=\"lineChartOptions\"\n                    [legend]=\"lineChartLegend\"\n                    [labels]=\"lineChartLabels\"\n                    [chartType]=\"lineChartType\"></canvas>\n          </div>\n        </div>\n      </div>\n    </accordion-group>\n  </accordion>\n  <br>\n  <div *ngFor=\"let outlet of outlets\" class=\"row\">\n    <div class=\"outlet\" [ngStyle]=\"style.row\">\n      <div class=\"col-xs-6\">\n        <label class=\"outlet-description\">{{outlet.description}}</label>\n      </div>\n      <div class=\"col-xs-6\">\n        <div class=\"btn-group pull-right\">\n          <label\n            class=\"btn btn-primary off-button\"\n            btnRadio=\"Off\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 0)\">Off</label>\n          <label\n            class=\"btn btn-primary on-button\"\n            btnRadio=\"On\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 1)\">On</label>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
+module.exports = "<h1 class=\"title\" [ngStyle]=\"style.header\" style=\"box-shadow: 1px 1px 5px grey\">\n  {{title}}\n</h1>\n\n<div class=\"container-fluid\">\n\n  <accordion>\n    <accordion-group class=\"text-center h1\" heading=\"{{ambient.temperature}}°F / {{ambient.humidity}}%\">\n      <div class=\"row\">\n        <div class=\"col-xs-12\">\n          <div style=\"display: block;\">\n            <canvas baseChart\n                    [datasets]=\"lineChartData\"\n                    [options]=\"lineChartOptions\"\n                    [legend]=\"lineChartLegend\"\n                    [labels]=\"lineChartLabels\"\n                    [chartType]=\"lineChartType\"></canvas>\n          </div>\n        </div>\n      </div>\n    </accordion-group>\n  </accordion>\n  <br>\n  <div *ngFor=\"let outlet of outlets\" class=\"row\">\n    <div class=\"outlet\" [ngStyle]=\"style.row\">\n      <div class=\"col-xs-6\">\n        <label class=\"outlet-description\">{{outlet.description}}</label>\n      </div>\n      <div class=\"col-xs-6\">\n        <div class=\"btn-group pull-right\">\n          <label\n            class=\"btn btn-primary off-button\"\n            btnRadio=\"Off\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 0)\">Off</label>\n          <label\n            class=\"btn btn-primary on-button\"\n            btnRadio=\"On\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 1)\">On</label>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
 
 /***/ }),
 
@@ -526,6 +534,10 @@ var PiService = (function () {
     };
     PiService.prototype.getAmbientTemperature = function () {
         return this.http.get('api/ambient')
+            .map(function (res) { return res.json() || {}; });
+    };
+    PiService.prototype.getTemperatureProbes = function () {
+        return this.http.get('api/temperature_probes')
             .map(function (res) { return res.json() || {}; });
     };
     return PiService;

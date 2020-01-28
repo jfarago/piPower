@@ -38,7 +38,7 @@ const serverOptions = {
 var dhtSensorHistory = [];
 
 // 22 is sensor type, not pin
-dhtSensor.read(22, config.dhtSensorPin, function (err, temperature, humidity) {
+dhtSensor.read(config.dhtType, config.dhtSensorPin, function (err, temperature, humidity) {
   console.log("DHT Sensor pin is: " + config.dhtSensorPin);
   console.log("DHT Type is (11/22): " + config.dhtType);
   if (err) {
