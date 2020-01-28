@@ -30,4 +30,9 @@ export class PiService {
       .map((res: Response) => res.json() || {});
   }
 
+  getTemperatureProbes(): Observable<any> {
+    return this.http.get('api/temperature_probes')
+      .map((res: Response) => res.json() || {});
+  }
+
 }

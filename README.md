@@ -65,7 +65,7 @@ Accessories
     
   Install latest version of node
   
-    $ nvm install 8
+    $ nvm install 4
 
 ##### Set timezone on raspberry pi
 
@@ -153,37 +153,13 @@ The proxy is to be able to serve the webpages locally, but point to the pi for s
     
 	$ cp proxy.conf.example.json proxy.conf.json
 	
-	
-##### Set up pi credentials for grunt scripts
-
-Create pi_credentials.json for grunt scripts and put it in the same folder as the gruntfile.js
-	
-	{
-		"dev": {
-			"host": "192.168.1.45",
-			"username": "pi",
-			"password": "letmein"
-		},
-		"release": {
-			"host": "192.168.1.46",
-			"username": "pi",
-			"password": "letmein"
-		}
-	}
-	
-I set this up to support two pi's, one for deployment and one for development. If you just want to push the code fill out the release section wityh your pi's credentials.
-	
-##### Install grunt cli
-	
-	$ npm install grunt-cli -g
-	
 ##### Deploy using filezilla or cyberduck
 
 ## Modifications
 
 ###### App changes
 * Make changes
-* Run npm run build
+* Run npm run builds
 * copy dist folder to raspberry pi
 * Restart server on pi
 
