@@ -297,7 +297,7 @@ webpackEmptyAsyncContext.id = "./src/$$_gendir lazy recursive";
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"title\" [ngStyle]=\"style.header\" style=\"box-shadow: 1px 1px 5px grey\">\n  {{title}}\n</h1>\n\n<div class=\"container-fluid\">\n\n  <accordion>\n    <accordion-group class=\"text-center h1\" heading=\"{{ambient.temperature}}°F / {{ambient.humidity}}%\">\n      <div class=\"row\">\n        <div class=\"col-xs-12\">\n          <div style=\"display: block;\">\n            <canvas baseChart\n                    [datasets]=\"lineChartData\"\n                    [options]=\"lineChartOptions\"\n                    [legend]=\"lineChartLegend\"\n                    [labels]=\"lineChartLabels\"\n                    [chartType]=\"lineChartType\"></canvas>\n          </div>\n        </div>\n      </div>\n    </accordion-group>\n  </accordion>\n  <br>\n  <div *ngFor=\"let outlet of outlets\" class=\"row\">\n    <div class=\"outlet\" [ngStyle]=\"style.row\">\n      <div class=\"col-xs-6\">\n        <label class=\"outlet-description\">{{outlet.description}}</label>\n      </div>\n      <div class=\"col-xs-6\">\n        <div class=\"btn-group pull-right\">\n          <label\n            class=\"btn btn-primary off-button\"\n            btnRadio=\"Off\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 0)\">Off</label>\n          <label\n            class=\"btn btn-primary on-button\"\n            btnRadio=\"On\"\n            [(ngModel)]=\"outlet.value\"\n            (click)=\"changeOutlet(outlet.headerNum, 1)\">On</label>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
+module.exports = "<h1 class=\"title\" [ngStyle]=\"style.header\" style=\"box-shadow: 1px 1px 5px #1C1C1E; margin-bottom: 0; font-size: 40px; padding: 16px\">\n  <span>{{title}}</span>\n  <span *ngIf=\"ambient.temperature\" style=\"float: right; font-size: 24px; margin-top: 10px;\">{{ambient.temperature}}°F</span>\n</h1>\n\n<div class=\"container-fluid\">\n  <div class=\"row\" style=\"padding: 20px 0 0 15px;\">\n    <div *ngFor=\"let outlet of outlets\" class=\"col-xs-6 col-sm-3\" style=\"padding: 0 15px 20px 0;\">\n      <div class=\"tile\" (click)=\"changeOutlet(outlet, !outlet.value)\">\n        <div class=\"outlet-description\">{{outlet.description}}</div>\n        <div class=\"outlet-icon\" [ngClass]=\"{'outlet-on': outlet.status === 'On'}\"><i class=\"fas {{outlet.icon}}\"></i></div>\n        <div class=\"outlet-details\" *ngIf=\"outlet.schedule\">\n          <span>On: {{outlet.schedule.on}}:00</span>\n          <span>Off: {{outlet.schedule.off}}:00</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
 
 /***/ }),
 
@@ -350,6 +350,10 @@ var AppComponent = (function () {
             }
         };
         this.oldAmbientLog = [];
+        this.iconMap = {
+            light: 'fa-lightbulb',
+            outlet: 'fa-plug',
+        };
         /**
          * Chart Config
          */
@@ -364,8 +368,11 @@ var AppComponent = (function () {
     }
     ;
     AppComponent.prototype.changeOutlet = function (outlet, state) {
-        this.piService.putOutlet(outlet, state).subscribe(function (res) {
-            console.log(res);
+        // using +state to convert true false to 0 or 1
+        this.piService.putOutlet(outlet.headerNum, +state).subscribe(function (res) {
+            outlet.status = res.message.value;
+            outlet.value = res.message.value === 'On' ? 1 : 0;
+            console.log('Turning the outlet', res.message.value);
         });
     };
     AppComponent.prototype.ngOnInit = function () {
@@ -386,9 +393,10 @@ var AppComponent = (function () {
         });
         this.piService.getOutlets().subscribe(function (res) {
             _this.outlets = res.message.value;
-            for (var i = 0; i < _this.outlets.length; i++) {
-                _this.outlets[i].value = _this.outlets[i].value ? 'On' : 'Off';
-            }
+            _this.outlets.map(function (outlet) {
+                outlet.status = outlet.value ? 'On' : 'Off';
+                outlet.icon = outlet.description.toLowerCase().includes('light') ? _this.iconMap['light'] : _this.iconMap['outlet'];
+            });
             console.log('Outlets: ', _this.outlets);
         });
         this.piService.getAmbientTemperature().subscribe(function (res) {

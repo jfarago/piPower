@@ -2,7 +2,7 @@
   "app": {
     "title": "Pi Power",
     "path": "/home/pi/pi-power/",
-    "color": "#FFA500",
+    "color": "#1C1C1E",
     "port": 3000
   },
   "dhtSensorPin" : 4,

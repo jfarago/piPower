@@ -28,8 +28,12 @@ export class AppComponent implements OnInit {
       color: this.color
     }
   };
-
   oldAmbientLog = [];
+
+  iconMap = {
+    light: 'fa-lightbulb',
+    outlet: 'fa-plug',
+  };
 
   constructor(private piService: PiService) {
   };
@@ -47,8 +51,11 @@ export class AppComponent implements OnInit {
   public lineChartType: string = 'line';
 
   public changeOutlet(outlet, state) {
-    this.piService.putOutlet(outlet, state).subscribe(res => {
-      console.log(res);
+    // using +state to convert true false to 0 or 1
+    this.piService.putOutlet(outlet.headerNum, +state).subscribe(res => {
+      outlet.status = res.message.value;
+      outlet.value = res.message.value === 'On' ? 1 : 0;
+      console.log('Turning the outlet', res.message.value)
     });
   }
 
@@ -73,9 +80,10 @@ export class AppComponent implements OnInit {
     this.piService.getOutlets().subscribe(res => {
       this.outlets = res.message.value;
 
-      for (let i = 0; i < this.outlets.length; i++) {
-        this.outlets[i].value = this.outlets[i].value ? 'On' : 'Off';
-      }
+      this.outlets.map(outlet => {
+        outlet.status = outlet.value ? 'On' : 'Off';
+        outlet.icon = outlet.description.toLowerCase().includes('light') ? this.iconMap['light'] : this.iconMap['outlet'];
+      })
 
       console.log('Outlets: ', this.outlets);
     });

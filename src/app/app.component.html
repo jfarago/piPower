@@ -1,43 +1,17 @@
-<h1 class="title" [ngStyle]="style.header" style="box-shadow: 1px 1px 5px grey">
-  {{title}}
+<h1 class="title" [ngStyle]="style.header" style="box-shadow: 1px 1px 5px #1C1C1E; margin-bottom: 0; font-size: 40px; padding: 16px">
+  <span>{{title}}</span>
+  <span *ngIf="ambient.temperature" style="float: right; font-size: 24px; margin-top: 10px;">{{ambient.temperature}}°F</span>
 </h1>
 
 <div class="container-fluid">
-
-  <accordion>
-    <accordion-group class="text-center h1" heading="{{ambient.temperature}}°F / {{ambient.humidity}}%">
-      <div class="row">
-        <div class="col-xs-12">
-          <div style="display: block;">
-            <canvas baseChart
-                    [datasets]="lineChartData"
-                    [options]="lineChartOptions"
-                    [legend]="lineChartLegend"
-                    [labels]="lineChartLabels"
-                    [chartType]="lineChartType"></canvas>
-          </div>
-        </div>
-      </div>
-    </accordion-group>
-  </accordion>
-  <br>
-  <div *ngFor="let outlet of outlets" class="row">
-    <div class="outlet" [ngStyle]="style.row">
-      <div class="col-xs-6">
-        <label class="outlet-description">{{outlet.description}}</label>
-      </div>
-      <div class="col-xs-6">
-        <div class="btn-group pull-right">
-          <label
-            class="btn btn-primary off-button"
-            btnRadio="Off"
-            [(ngModel)]="outlet.value"
-            (click)="changeOutlet(outlet.headerNum, 0)">Off</label>
-          <label
-            class="btn btn-primary on-button"
-            btnRadio="On"
-            [(ngModel)]="outlet.value"
-            (click)="changeOutlet(outlet.headerNum, 1)">On</label>
+  <div class="row" style="padding: 20px 0 0 15px;">
+    <div *ngFor="let outlet of outlets" class="col-xs-6 col-sm-3" style="padding: 0 15px 20px 0;">
+      <div class="tile" (click)="changeOutlet(outlet, !outlet.value)">
+        <div class="outlet-description">{{outlet.description}}</div>
+        <div class="outlet-icon" [ngClass]="{'outlet-on': outlet.status === 'On'}"><i class="fas {{outlet.icon}}"></i></div>
+        <div class="outlet-details" *ngIf="outlet.schedule">
+          <span>On: {{outlet.schedule.on}}:00</span>
+          <span>Off: {{outlet.schedule.off}}:00</span>
         </div>
       </div>
     </div>

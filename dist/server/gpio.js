@@ -14,6 +14,7 @@ function initiatePins(pinArray) {
 		});
 
 		gpios.description = pinArray[i].description;
+		gpios.schedule = pinArray[i].schedule;
 
 		tempPinArray.push(gpios);
 	}

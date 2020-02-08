@@ -1,5 +1,7 @@
 body {
   font-size: 16px;
+  color: white;
+  background: black;
 }
 .on-button {
   background-color: lightgrey;
@@ -34,6 +36,34 @@ body {
 }
 
 .outlet-description {
-  height: 34px;
-  line-height: 34px;
+  height: 25px;
+  line-height: 25px;
 }
+
+.outlet-icon {
+  height: 100px;
+  line-height: 100px;
+  font-size: 50px;
+}
+
+.outlet-details {
+  font-size: 14px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.outlet-on {
+  color: goldenrod;
+}
+
+.tile {
+  border: 1px solid black;
+  background: #1C1C1E;
+  max-width: 158px; // designed for iphone x
+  height: 158px; // designed for iphone x
+  border-radius: 12px;
+  padding: 5px;
+  text-align: center;
+  margin: auto;
+}
+
