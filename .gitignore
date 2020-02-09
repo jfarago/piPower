@@ -44,7 +44,11 @@ pi_credentials.json
 cert.csr
 certificate.pem
 private.key
-/src/server/users.htpasswd
-/src/server/config.json
 proxy.conf.json
 package-lock.json
+/dist/server/users.htpasswd
+/dist/server/config.json
+/dist/server/node_modules/
+/dist/server/package-lock.json
+/dist/server/config.json
+/src/server/config.json
