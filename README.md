@@ -120,18 +120,21 @@ Select localisation options > change timezone > geographical area > timezone.
 	$ sudo apt-get install apache2-utils
 	$ htpasswd -c users.htpasswd admin
 
+##### Set up your pin configuration
+
+Copy server/config.example.json file and create a server/config.json file
+
+    $ cp config.example.json config.json
+
 ##### Launch Server
 
     $ sudo node ~/pi-power/dist/server/app.js
     
 Navigate to https://<raspberry-pi-ip>:3000
 
-##### Modifying the configuration
-
-  The website is built from the config.json. Modify the array of outlets
-  and names to your liking.
-
 ### Set Up Dev Environment on computer
+
+  Note: dev environment needs node 12, while raspberry pi needs node 4
 
 ##### Clone the repository
 
