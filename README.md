@@ -122,7 +122,7 @@ Select localisation options > change timezone > geographical area > timezone.
 
 ##### Launch Server
 
-    $ sudo node ~/piPower/dist/server/app.js
+    $ sudo node ~/pi-power/dist/server/app.js
     
 Navigate to https://<raspberry-pi-ip>:3000
 
