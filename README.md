@@ -43,6 +43,7 @@ Accessories
 
   I recommend using [PiBakery](https://www.pibakery.org/), its very easy to use. I normally
   configure the wifi, hostname, password, reboot, and then i ssh into it fo the next steps.
+  Raspbian lite can be used, no need to use the full version.
 
 ##### Install updates
 
@@ -63,7 +64,7 @@ Accessories
   
     $ nvm --version
     
-  Install latest version of node
+  Install node 4 (sensor libraries require old version)
   
     $ nvm install 4
 
@@ -73,7 +74,8 @@ Accessories
     
 Select localisation options > change timezone > geographical area > timezone.
     
-##### Enable w1-gpio
+##### Enable one-wire interface for sensors
+If modprobe command fails, update your raspberry pi with sudo `rpi-update`
 
     $ sudo modprobe w1-gpio
     $ sudo nano /boot/config.txt
@@ -91,6 +93,7 @@ Select localisation options > change timezone > geographical area > timezone.
 	$ make
 	$ sudo make check
 	$ sudo make install
+	$ cd ../
 	$ rm -rf bcm2835-1.46.tar.gz
 	
 ##### Reboot
@@ -129,8 +132,15 @@ Copy server/config.example.json file and create a server/config.json file
 ##### Launch Server
 
     $ sudo node ~/pi-power/dist/server/app.js
+
+	If you get a sudo node error then you need to install a version of node globally. This is because we are using nvm to install node.
+	https://www.digitalocean.com/community/tutorials/how-to-install-node-js-with-nvm-node-version-manager-on-a-vps#-installing-nodejs-on-a-vps
+	https://stackoverflow.com/questions/21215059/cant-use-nvm-from-root-or-sudo
+
+	$ n=$(which node);n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
+
     
-Navigate to https://<raspberry-pi-ip>:3000
+Navigate to https://raspberry-pi-ip:3000
 
 ### Set Up Dev Environment on computer
 
@@ -181,7 +191,11 @@ The proxy is to be able to serve the webpages locally, but point to the pi for s
    
 ## Extras
 
-#### Run server when pi boots
+#### Run server when pi boots option 1
+
+[pm2](https://pm2.keymetrics.io/)
+
+#### Run server when pi boots option 2
 
 ```
 $ sudo nano /etc/rc.local
