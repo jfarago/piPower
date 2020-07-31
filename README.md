@@ -13,7 +13,7 @@ Although, I have used this to build a aquarium monitor, it would be very easy to
 
 <p align="center">
   <img width="800" src="https://i.imgur.com/EgLEloc.jpg">
-  <img width="300" src="https://i.imgur.com/laRh66M.jpg">
+  <img width="300" src="https://i.imgur.com/FawijfY.png">
 </p>
 
 ## BOM
