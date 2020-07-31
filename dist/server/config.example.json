@@ -1,14 +1,19 @@
 {
   "app": {
     "title": "Pi Power",
-    "path": "/home/pi/piPower/",
-    "color": "#FFA500",
+    "path": "/home/pi/pi-power/",
+    "color": "#1C1C1E",
     "port": 3000
   },
-  "dhtSensorPin" : 22,
+  "notifications" : {
+    "pushoverToken": "",
+    "pushoverUserID": ""
+  },
+  "dhtSensorPin" : 4,
+  "dhtType" : 22,
   "pins": [
     {
-      "pinNumber": 6,
+      "pinNumber": 8,
       "direction": "out",
       "description": "White Lights",
       "schedule": {
@@ -17,7 +22,7 @@
       }
     },
     {
-      "pinNumber": 5,
+      "pinNumber": 25,
       "direction": "out",
       "description": "Blue Lights",
       "schedule": {
@@ -26,7 +31,7 @@
       }
     },
     {
-      "pinNumber": 21,
+      "pinNumber": 24,
       "direction": "out",
       "description": "Refugium Lights",
       "schedule": {
@@ -35,27 +40,27 @@
       }
     },
     {
-      "pinNumber": 12,
+      "pinNumber": 23,
       "direction": "out",
       "description": "Protein Skimmer"
     },
     {
-      "pinNumber": 20,
+      "pinNumber": 18,
       "direction": "out",
       "description": "Return Pump"
     },
     {
-      "pinNumber": 13,
+      "pinNumber": 22,
       "direction": "out",
       "description": "Power Head"
     },
     {
-      "pinNumber": 19,
+      "pinNumber": 27,
       "direction": "out",
       "description": "Heater"
     },
     {
-      "pinNumber": 16,
+      "pinNumber": 17,
       "direction": "out",
       "description": "Auto Top Off"
     }

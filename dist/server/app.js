@@ -1,17 +1,19 @@
-var express = require('express');
-var path = require('path');
-var fs = require("fs");
-var os = require("os");
-var sensor = require('ds18x20');
-var auth = require('http-auth');
-var https = require('https');
-var dhtSensor = require('node-dht-sensor');
-
+const express = require('express');
+const path = require('path');
+const fs = require("fs");
+const os = require("os");
+const sensor = require('ds18x20');
+const auth = require('http-auth');
+const https = require('https');
+const dhtSensor = require('node-dht-sensor');
 
 const time = require('./time.js');
 const gpio = require('./gpio.js');
 const piStats = require('./piStats.js');
 const scheduler = require('./scheduler');
+const notifications = require('./notifications');
+
+notifications.sendMessage('Booting up')
 
 const config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 const outlets = gpio.initiatePins(config.pins);

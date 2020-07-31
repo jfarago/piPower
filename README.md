@@ -84,7 +84,7 @@ If modprobe command fails, update your raspberry pi with sudo `rpi-update`
 
 	dtoverlay=w1-gpio
 	    
-##### Install DHT11/22 supporting library (I cannot get this to work on the pi zero)
+##### Install DHT11/22 supporting library
 
 	$ wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
 	$ tar zxvf bcm2835-1.46.tar.gz
@@ -139,6 +139,14 @@ https://stackoverflow.com/questions/21215059/cant-use-nvm-from-root-or-sudo
 
 	$ n=$(which node);n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
 
+##### Set up push notifications
+
+Comfigureable Notifications
+- on boot
+- temperature threshold
+- pin high/low
+
+Create credentials file ()
     
 Navigate to https://raspberry-pi-ip:3000
 
