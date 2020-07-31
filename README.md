@@ -133,9 +133,9 @@ Copy server/config.example.json file and create a server/config.json file
 
     $ sudo node ~/pi-power/dist/server/app.js
 
-	If you get a sudo node error then you need to install a version of node globally. This is because we are using nvm to install node.
-	https://www.digitalocean.com/community/tutorials/how-to-install-node-js-with-nvm-node-version-manager-on-a-vps#-installing-nodejs-on-a-vps
-	https://stackoverflow.com/questions/21215059/cant-use-nvm-from-root-or-sudo
+If you get a sudo node error then you need to install a version of node globally. This is because we are using nvm to install node.
+https://www.digitalocean.com/community/tutorials/how-to-install-node-js-with-nvm-node-version-manager-on-a-vps#-installing-nodejs-on-a-vps
+https://stackoverflow.com/questions/21215059/cant-use-nvm-from-root-or-sudo
 
 	$ n=$(which node);n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
 
