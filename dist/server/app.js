@@ -18,13 +18,7 @@ notifications.sendMessage('Booting up')
 const config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 const outlets = gpio.initiatePins(config.pins);
 const schedule = scheduler.createSchedule(config.pins, outlets);
-
-const temperatureProbes = {
-  leftLight: {
-    id: '28-000006700b67',
-    temperature: ''
-  }
-};
+const temperatureProbes = config.temperatureProbes || [];
 
 const basicAuth = auth.basic({
   realm: "SECRET",
@@ -39,21 +33,23 @@ const serverOptions = {
 
 var dhtSensorHistory = [];
 
-// 22 is sensor type, not pin
-dhtSensor.read(config.dhtType, config.dhtSensorPin, function (err, temperature, humidity) {
-  console.log("DHT Sensor pin is: " + config.dhtSensorPin);
-  console.log("DHT Type is (11/22): " + config.dhtType);
-  if (err) {
-    console.log('Something went wrong when reading DHT Sensor:', err);
-  } else {
-    console.log('DHT11/DHT22 Driver is Loaded');
-    console.log('Temp: ' + (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100 + '°F, ' +
-      'Humidity: ' + humidity.toFixed(1) + '%'
-    );
-    dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
-    console.log("Temperature log:", dhtSensorHistory);
-  }
-});
+// Get initial reading of temperature
+if (config.dhtSensor) {
+  setTimeout(function() {
+    dhtSensor.read(config.dhtSensor.type, 4, function (err, temperature, humidity) {
+      console.log("DHT Type is (11/22): " + config.dhtSensor.type);
+      if (err) {
+        console.log('Something went wrong when reading DHT Sensor:', err);
+      } else {
+        console.log('DHT11/DHT22 Driver is Loaded');
+        console.log('Temp: ' + formatTemperature(temperature, config.dhtSensor.offset) + '°F, ' +
+          'Humidity: ' + humidity.toFixed(1) + '%'
+        );
+        dhtSensorHistory.push({temperature: formatTemperature(temperature, config.dhtSensor.offset), humidity: humidity.toFixed(1)});
+      }
+    });
+  }, 1000)
+}
 
 sensor.isDriverLoaded(function (err) {
   if (err) {
@@ -79,23 +75,21 @@ setInterval(function () {
 }, 300000);
 
 setInterval(function() {
-  dhtSensor.read(config.dhtType, config.dhtSensorPin, function (err, temperature, humidity) {
-    console.log(config.dhtSensorPin)
-
-    if (err) {
-      console.log('Something went wrong when reading DHT Sensor:', err);
-    } else {
-      console.log("Logging Temperature to log");
-
-      //Limit log to 1 day
-      if(dhtSensorHistory.length >= 24) {
-        dhtSensorHistory.shift();
+  if (config.dhtSensor) {
+    dhtSensor.read(config.dhtSensor.type, 4, function (err, temperature, humidity) {  
+      if (err) {
+        console.log('Something went wrong when reading DHT Sensor:', err);
+      } else {
+        console.log("Logging Temperature to log");
+        //Limit log to 1 day
+        if(dhtSensorHistory.length >= 24) {
+          dhtSensorHistory.shift();
+        }
+        dhtSensorHistory.push({temperature: formatTemperature(temperature, config.dhtSensor.offset), humidity: humidity.toFixed(1)});
       }
-
-      dhtSensorHistory.push({temperature: (Math.round(temperature.toFixed(1) * 1.8 + 32) * 100) / 100, humidity: humidity.toFixed(1)});
-    }
-  });
-}, 3600000);
+    });
+  }
+}, 3600000); // 1 hour
 
 app.use(auth.connect(basicAuth));
 
@@ -175,31 +169,44 @@ app
 
   .get('/api/temperature_probes', function (req, res) {
     sensor.getAll(function (err, probeObj) {
-      for (thermometer in temperatureProbes) {
-        for (probe in probeObj) {
-          if (temperatureProbes[thermometer].id == probe) {
-            temperatureProbes[thermometer].temperature = Math.round((probeObj[probe] * 1.8 + 32) * 100) / 100;
+      if (temperatureProbes.length) {
+        temperatureProbes.map(thermometer => {
+          for (probe in probeObj) {
+            if (thermometer.id == probe) {
+              thermometer.temperature = Math.round((probeObj[probe] * 1.8 + 32) * 100) / 100 + thermometer.offset;
+            }
           }
-        }
+        })
+        res.send(message('Success', {
+          value: temperatureProbes
+        }));
+      } else {
+        res.send(message('Fail', {
+          value: "No temperature probes found"
+        }));
       }
-      res.send(message('Success', {
-        value: temperatureProbes
-      }));
+      
     });
   })
 
   .get('/api/ambient', function(req, res) {
-    dhtSensor.read(config.dhtType, config.dhtSensorPin, function (err, temperature, humidity) {
-      if (err) {
-        console.log('Something went wrong loading the DHT driver:', err);
-      } else {
-        res.send(message('Success', {
-          temperature: temperature.toFixed(1),
-          humidity: humidity.toFixed(1),
-          log: dhtSensorHistory
-        }));
-      }
-    });
+    if (config.dhtSensor) {
+      dhtSensor.read(config.dhtSensor.type, 4, function (err, temperature, humidity) {
+        if (err) {
+          console.log('Something went wrong loading the DHT driver:', err);
+        } else {
+          res.send(message('Success', {
+            temperature: formatTemperature(temperature, config.dhtSensor.offset),
+            humidity: humidity.toFixed(1),
+            log: dhtSensorHistory
+          }));
+        }
+      });
+    } else {
+      res.send(message('Fail', {
+        value: "No DHT sensor configured."
+      }));
+    }
   })
 
   .get('/api/unit/info', function (req, res) {
@@ -237,4 +244,8 @@ function message(status, message) {
     'status': status,
     'message': message
   }
+}
+
+function formatTemperature(temp, offset) {
+  return (Math.round(temp.toFixed(1) * 1.8 + 32) * 100) / 100  + offset
 }

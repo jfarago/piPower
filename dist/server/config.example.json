@@ -9,8 +9,18 @@
     "pushoverToken": "",
     "pushoverUserID": ""
   },
-  "dhtSensorPin" : 4,
-  "dhtType" : 22,
+  "temperatureProbes": [
+    {
+      "name": "Refugium",
+      "id": "28-0000066fbb8c",
+      "alert": 80,
+      "offset": -2
+    }
+  ],
+  "dhtSensor" : {
+    "type": 11,
+    "offset": 0
+  },
   "pins": [
     {
       "pinNumber": 8,

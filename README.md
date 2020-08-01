@@ -139,6 +139,10 @@ https://stackoverflow.com/questions/21215059/cant-use-nvm-from-root-or-sudo
 
 	$ n=$(which node);n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
 
+Create credentials file ()
+    
+Navigate to https://raspberry-pi-ip:3000
+
 ##### Set up push notifications
 
 Comfigureable Notifications
@@ -146,9 +150,40 @@ Comfigureable Notifications
 - temperature threshold
 - pin high/low
 
-Create credentials file ()
-    
-Navigate to https://raspberry-pi-ip:3000
+##### Set up temperature probes
+
+- Connect temperature probes data pins to pin gpio 4 (hardware pin 7)
+- On first boot, the server will log the temperature probes id's that where found.
+- Copy those id's to set up probes in the config.json
+
+"alert" is an optional field. If push notifications are enabled, a message will be sent if the temperature passes the alert threshold.
+
+"offset" is used to calibrate the probe. Temp is in fahrenheit 
+
+```
+"temperatureProbes": [
+    {
+      "name": "Refugium",
+      "id": "28-0000066fbb8c",
+      "alert": 80,
+      "offset": -2
+    }
+]
+```
+
+##### Set up DHT Sensor 
+
+- Connect temperature probe data pin to pin gpio 4 (hardware pin 7)
+- Configure sensor type and offset in the config.json
+
+"offset" is used to calibrate the probe. Temp is in fahrenheit 
+
+```
+"dhtSensor" : {
+    "type": 11,
+    "offset": 0
+  },
+```
 
 ### Set Up Dev Environment on computer
 

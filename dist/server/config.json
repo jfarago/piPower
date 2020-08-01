@@ -5,8 +5,6 @@
     "color": "#1C1C1E",
     "port": 3000
   },
-  "dhtSensorPin" : 4,
-  "dhtType" : 22,
   "pins": [
     {
       "pinNumber": 8,
