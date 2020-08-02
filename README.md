@@ -221,16 +221,18 @@ The proxy is to be able to serve the webpages locally, but point to the pi for s
 
 
 ## Server
-- GET App Configuration
+ - GET App Configuration
 	 - `https://<Raspberry Pi IP>/api/app-config`
  - GET Pin Configuration
 	 - `https://<Raspberry Pi IP>/api/outlets`
  - GET Pin State
 	 - `https://<Raspberry Pi IP>/api/outlets/:pin`
+ - GET Temperature Probes
+	 - `https://<Raspberry Pi IP>/api/temperature_probes`
+ - GET DHT Temperature/Humidity State
+	 - `https://<Raspberry Pi IP>/api/ambient`
  - PUT Pin State
 	 - `https://<Raspberry Pi IP>/api/outlets/:pin/:state`
- - GET Raspberry Pi System Stats
-	 - `https://<Raspberry Pi IP>/api/unit/info`
    
 ## Extras
 

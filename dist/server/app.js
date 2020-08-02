@@ -9,11 +9,10 @@ const dhtSensor = require('node-dht-sensor');
 
 const time = require('./time.js');
 const gpio = require('./gpio.js');
-const piStats = require('./piStats.js');
 const scheduler = require('./scheduler');
 const notifications = require('./notifications');
 
-//notifications.sendMessage('Booting up')
+notifications.sendMessage('Booting up')
 
 const config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 const outlets = gpio.initiatePins(config.pins);
@@ -69,18 +68,19 @@ sensor.isDriverLoaded(function (err) {
 });
 
 setInterval(function () {
+  // Check probe temps and send a message if they exceed the configured threshold
   var probes = getTemperatureProbes();
   if (probes.length) {
     probes.map(probe => {
-      console.log(`Probe temperature is ${probe.temperature} and the alert temperature is ${probe.alert}`)
       if (probe.temperature > probe.alert) {
         notifications.sendMessage(`${probe.name} temperature exceeded. Current temp is ${probe.temperature}`)
       }
     })
   }
-}, 5000); // 5 Minutes = 300000
+}, 300000); // 5 Minutes
 
 setInterval(function() {
+  // Save 24 log of temp/humidity sensor
   if (config.dhtSensor) {
     dhtSensor.read(config.dhtSensor.type, 4, function (err, temperature, humidity) {  
       if (err) {
@@ -197,36 +197,6 @@ app
         value: "No DHT sensor configured."
       }));
     }
-  })
-
-  .get('/api/unit/info', function (req, res) {
-
-    getCpuTemp()
-      .then(function (temp) {
-        res.send(message('Success', {
-          value: {
-            "os": {
-              "sum": os.type() + " : " + os.release(),
-              "type": os.type(),
-              "platform": os.platform(),
-              "release": os.release()
-            },
-            "uptime": time.formatTime(os.uptime()),
-            "hostname": os.hostname(),
-            "performance": {
-              "cpu": os.cpus(),
-              "load": Math.round(os.loadavg()[1] * 100),
-              "temperature": temp,
-              "memory": {
-                "free": Math.floor((os.freemem() / 1024) / 1024) + "MB",
-                "use": Math.floor(((os.totalmem() - os.freemem()) / 1024) / 1024) + "MB",
-                "total": Math.floor((os.totalmem() / 1024) / 1024) + "MB",
-                "percentage": Math.floor(((os.totalmem() - os.freemem()) / os.totalmem()) * 100)
-              }
-            }
-          }
-        }));
-      });
   });
 
 function getTemperatureProbes() {

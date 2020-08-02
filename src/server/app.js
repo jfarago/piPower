@@ -9,7 +9,6 @@ const dhtSensor = require('node-dht-sensor');
 
 const time = require('./time.js');
 const gpio = require('./gpio.js');
-const piStats = require('./piStats.js');
 const scheduler = require('./scheduler');
 const notifications = require('./notifications');
 
@@ -198,36 +197,6 @@ app
         value: "No DHT sensor configured."
       }));
     }
-  })
-
-  .get('/api/unit/info', function (req, res) {
-
-    getCpuTemp()
-      .then(function (temp) {
-        res.send(message('Success', {
-          value: {
-            "os": {
-              "sum": os.type() + " : " + os.release(),
-              "type": os.type(),
-              "platform": os.platform(),
-              "release": os.release()
-            },
-            "uptime": time.formatTime(os.uptime()),
-            "hostname": os.hostname(),
-            "performance": {
-              "cpu": os.cpus(),
-              "load": Math.round(os.loadavg()[1] * 100),
-              "temperature": temp,
-              "memory": {
-                "free": Math.floor((os.freemem() / 1024) / 1024) + "MB",
-                "use": Math.floor(((os.totalmem() - os.freemem()) / 1024) / 1024) + "MB",
-                "total": Math.floor((os.totalmem() / 1024) / 1024) + "MB",
-                "percentage": Math.floor(((os.totalmem() - os.freemem()) / os.totalmem()) * 100)
-              }
-            }
-          }
-        }));
-      });
   });
 
 function getTemperatureProbes() {
