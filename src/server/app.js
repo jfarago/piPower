@@ -69,12 +69,19 @@ sensor.isDriverLoaded(function (err) {
 });
 
 setInterval(function () {
-  // Keep alive to prevent pi from sleeping on old version of node.
-  // Issue was stopping the scheduler from firing commands.
-  // https://github.com/nodejs/node/issues/4262
-}, 300000);
+  // Check probe temps and send a message if they exceed the configured threshold
+  var probes = getTemperatureProbes();
+  if (probes.length) {
+    probes.map(probe => {
+      if (probe.temperature > probe.alert) {
+        notifications.sendMessage(`${probe.name} temperature exceeded. Current temp is ${probe.temperature}`)
+      }
+    })
+  }
+}, 300000); // 5 Minutes
 
 setInterval(function() {
+  // Save 24 log of temp/humidity sensor
   if (config.dhtSensor) {
     dhtSensor.read(config.dhtSensor.type, 4, function (err, temperature, humidity) {  
       if (err) {
@@ -168,25 +175,9 @@ app
   })
 
   .get('/api/temperature_probes', function (req, res) {
-    sensor.getAll(function (err, probeObj) {
-      if (temperatureProbes.length) {
-        temperatureProbes.map(thermometer => {
-          for (probe in probeObj) {
-            if (thermometer.id == probe) {
-              thermometer.temperature = Math.round((probeObj[probe] * 1.8 + 32) * 100) / 100 + thermometer.offset;
-            }
-          }
-        })
-        res.send(message('Success', {
-          value: temperatureProbes
-        }));
-      } else {
-        res.send(message('Fail', {
-          value: "No temperature probes found"
-        }));
-      }
-      
-    });
+    res.send(message('Success', {
+      value: getTemperatureProbes()
+    }));
   })
 
   .get('/api/ambient', function(req, res) {
@@ -239,6 +230,22 @@ app
       });
   });
 
+function getTemperatureProbes() {
+  var probeObj = sensor.getAll();
+  if (temperatureProbes.length) {
+    temperatureProbes.map(thermometer => {
+      for (probe in probeObj) {
+        if (thermometer.id == probe) {
+          thermometer.temperature = formatTemperature(probeObj[probe], thermometer.offset)
+        }
+      }
+    })
+    return temperatureProbes
+  } else {
+    return "No probes configured";
+  }
+}
+
 function message(status, message) {
   return {
     'status': status,
@@ -247,5 +254,5 @@ function message(status, message) {
 }
 
 function formatTemperature(temp, offset) {
-  return (Math.round(temp.toFixed(1) * 1.8 + 32) * 100) / 100  + offset
+  return (temp * 1.8 + 32  + offset).toFixed(1)
 }
