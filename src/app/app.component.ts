@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
     });
 
     this.piService.getTemperatureProbes().subscribe(res => {
-      if (res.message && res.message.value.length) {
+      if (res.message && Array.isArray(res.message.value)) {
         this.thermometers = res.message.value
       }
       console.log('Thermometers: ', this.thermometers);

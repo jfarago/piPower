@@ -393,7 +393,7 @@ var AppComponent = (function () {
             };
         });
         this.piService.getTemperatureProbes().subscribe(function (res) {
-            if (res.message && res.message.value.length) {
+            if (res.message && Array.isArray(res.message.value)) {
                 _this.thermometers = res.message.value;
             }
             console.log('Thermometers: ', _this.thermometers);
