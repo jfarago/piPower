@@ -297,7 +297,7 @@ webpackEmptyAsyncContext.id = "./src/$$_gendir lazy recursive";
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"title\" [ngStyle]=\"style.header\" style=\"box-shadow: 1px 1px 5px #1C1C1E; margin-bottom: 0; font-size: 40px; padding: 16px\">\n  <span>{{title}}</span>\n  <span *ngIf=\"ambient.temperature\" style=\"float: right; font-size: 24px; margin-top: 10px;\">{{ambient.temperature}}°F</span>\n</h1>\n\n<div class=\"container-fluid\">\n  <div class=\"row\" style=\"padding: 20px 0 0 15px;\">\n    <div *ngFor=\"let outlet of outlets\" class=\"col-xs-6 col-sm-3\" style=\"padding: 0 15px 20px 0;\">\n      <div class=\"tile\" (click)=\"changeOutlet(outlet, !outlet.value)\">\n        <div class=\"outlet-description\">{{outlet.description}}</div>\n        <div class=\"outlet-icon\" [ngClass]=\"{'outlet-on': outlet.status === 'On'}\"><i class=\"fas {{outlet.icon}}\"></i></div>\n        <div class=\"outlet-details\" *ngIf=\"outlet.schedule\">\n          <span>On: {{outlet.schedule.on}}:00</span>\n          <span>Off: {{outlet.schedule.off}}:00</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
+module.exports = "<h1 class=\"title\" [ngStyle]=\"style.header\" style=\"box-shadow: 1px 1px 5px #1C1C1E; margin-bottom: 0; font-size: 40px; padding: 16px\">\n  <span>{{title}}</span>\n  <span *ngIf=\"ambient.temperature\" style=\"float: right; font-size: 24px; margin-top: 10px;\">{{ambient.temperature}}°F</span>\n</h1>\n\n<div class=\"container-fluid\">\n  <div class=\"row\" style=\"padding: 20px 0 0 15px;\">\n    <!-- OUTLETS -->\n    <div *ngFor=\"let outlet of outlets\" class=\"col-xs-6 col-sm-3\" style=\"padding: 0 15px 20px 0;\">\n      <div class=\"tile\" (click)=\"changeOutlet(outlet, !outlet.value)\">\n        <div class=\"description\">{{outlet.description}}</div>\n        <div class=\"icon\" [ngClass]=\"{'on': outlet.status === 'On'}\"><i class=\"fas {{outlet.icon}}\"></i></div>\n        <div class=\"details\" *ngIf=\"outlet.schedule\">\n          <span>On: {{outlet.schedule.on}}:00</span>\n          <span>Off: {{outlet.schedule.off}}:00</span>\n        </div>\n      </div>\n    </div>\n    <!-- THERMOMETERS -->\n    <div *ngFor=\"let thermometer of thermometers\" class=\"col-xs-6 col-sm-3\" style=\"padding: 0 15px 20px 0;\">\n      <div class=\"tile\">\n        <div class=\"description\">{{thermometer.name}}</div>\n        <div class=\"temperature on\">{{thermometer.temperature}}°F</div>\n        <div class=\"details\" *ngIf=\"thermometer.alert\">\n          <span>Alert: {{thermometer.alert}}°F</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n"
 
 /***/ }),
 
@@ -332,6 +332,7 @@ var AppComponent = (function () {
         this.title = '';
         this.color = '#ffffff';
         this.outlets = [];
+        this.thermometers = [];
         this.ambient = {
             temperature: 0,
             humidity: 0,
@@ -352,7 +353,7 @@ var AppComponent = (function () {
         this.oldAmbientLog = [];
         this.iconMap = {
             light: 'fa-lightbulb',
-            outlet: 'fa-plug',
+            outlet: 'fa-plug'
         };
         /**
          * Chart Config
@@ -390,6 +391,12 @@ var AppComponent = (function () {
             _this.style.temp = {
                 color: _this.color
             };
+        });
+        this.piService.getTemperatureProbes().subscribe(function (res) {
+            if (res.message && res.message.value.length) {
+                _this.thermometers = res.message.value;
+            }
+            console.log('Thermometers: ', _this.thermometers);
         });
         this.piService.getOutlets().subscribe(function (res) {
             _this.outlets = res.message.value;

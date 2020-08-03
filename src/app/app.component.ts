@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ɵConsole} from '@angular/core';
 
 import {PiService} from './pi.service';
 
@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   title = '';
   color = '#ffffff';
   outlets = [];
+  thermometers = [];
   ambient = {
     temperature: 0,
     humidity: 0,
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
 
   iconMap = {
     light: 'fa-lightbulb',
-    outlet: 'fa-plug',
+    outlet: 'fa-plug'
   };
 
   constructor(private piService: PiService) {
@@ -76,6 +77,13 @@ export class AppComponent implements OnInit {
         color: this.color
       };
     });
+
+    this.piService.getTemperatureProbes().subscribe(res => {
+      if (res.message && res.message.value.length) {
+        this.thermometers = res.message.value
+      }
+      console.log('Thermometers: ', this.thermometers);
+    })
 
     this.piService.getOutlets().subscribe(res => {
       this.outlets = res.message.value;

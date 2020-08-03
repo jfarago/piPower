@@ -5,13 +5,24 @@
 
 <div class="container-fluid">
   <div class="row" style="padding: 20px 0 0 15px;">
+    <!-- OUTLETS -->
     <div *ngFor="let outlet of outlets" class="col-xs-6 col-sm-3" style="padding: 0 15px 20px 0;">
       <div class="tile" (click)="changeOutlet(outlet, !outlet.value)">
-        <div class="outlet-description">{{outlet.description}}</div>
-        <div class="outlet-icon" [ngClass]="{'outlet-on': outlet.status === 'On'}"><i class="fas {{outlet.icon}}"></i></div>
-        <div class="outlet-details" *ngIf="outlet.schedule">
+        <div class="description">{{outlet.description}}</div>
+        <div class="icon" [ngClass]="{'on': outlet.status === 'On'}"><i class="fas {{outlet.icon}}"></i></div>
+        <div class="details" *ngIf="outlet.schedule">
           <span>On: {{outlet.schedule.on}}:00</span>
           <span>Off: {{outlet.schedule.off}}:00</span>
+        </div>
+      </div>
+    </div>
+    <!-- THERMOMETERS -->
+    <div *ngFor="let thermometer of thermometers" class="col-xs-6 col-sm-3" style="padding: 0 15px 20px 0;">
+      <div class="tile">
+        <div class="description">{{thermometer.name}}</div>
+        <div class="temperature on">{{thermometer.temperature}}°F</div>
+        <div class="details" *ngIf="thermometer.alert">
+          <span>Alert: {{thermometer.alert}}°F</span>
         </div>
       </div>
     </div>
