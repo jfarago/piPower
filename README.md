@@ -47,38 +47,38 @@ Accessories
 
 ##### Install updates
 
-    $ sudo apt update -y && sudo apt upgrade -y
+    sudo apt update -y && sudo apt upgrade -y
 
 ##### Install git
 
-    $ sudo apt-get install git
+    sudo apt-get install git
 	
 ##### Install NodeJS via NVM
 
-    $ git clone https://github.com/creationix/nvm.git ~/.nvm
-    $ sudo echo "source ~/.nvm/nvm.sh" >> ~/.bashrc && sudo echo "source ~/.nvm/nvm.sh" >> ~/.profile
+    git clone https://github.com/creationix/nvm.git ~/.nvm
+    sudo echo "source ~/.nvm/nvm.sh" >> ~/.bashrc && sudo echo "source ~/.nvm/nvm.sh" >> ~/.profile
 
   Exit all terminal sessions and open new one
   
   Test to see if install worked
   
-    $ nvm --version
+    nvm --version
     
   Install node 4 (sensor libraries require old version)
   
-    $ nvm install 4
+    nvm install 4
 
 ##### Set timezone on raspberry pi
 
-    $ sudo raspi-config
+    sudo raspi-config
     
 Select localisation options > change timezone > geographical area > timezone.
     
 ##### Enable one-wire interface for sensors
 If modprobe command fails, update your raspberry pi with sudo `rpi-update`
 
-    $ sudo modprobe w1-gpio
-    $ sudo nano /boot/config.txt
+    sudo modprobe w1-gpio
+    sudo nano /boot/config.txt
     
 ###### Add this line to bottom of file:
 
@@ -86,52 +86,51 @@ If modprobe command fails, update your raspberry pi with sudo `rpi-update`
 	    
 ##### Install DHT11/22 supporting library
 
-	$ wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
-	$ tar zxvf bcm2835-1.46.tar.gz
-	$ cd bcm2835-1.46
-	$ ./configure
-	$ make
-	$ sudo make check
-	$ sudo make install
-	$ cd ../
-	$ rm -rf bcm2835-1.46.tar.gz
+	wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
+	tar zxvf bcm2835-1.46.tar.gz
+	cd bcm2835-1.46
+	./configure
+	make
+	sudo make check
+	sudo make install
+	rm -rf ../bcm2835-1.46.tar.gz
 	
 ##### Reboot
 	
-	$ sudo reboot now
+	sudo reboot now
 	
 ### Raspberry Pi Server Setup
 
 ##### Clone the repository
 
-    $ sudo git clone https://github.com/jfarago/piPower.git pi-power
+  sudo git clone https://github.com/jfarago/piPower.git pi-power
 
 ##### Install node dependencies
 
-	$ cd pi-power/dist/server
-	$ sudo chown -R $(whoami) ./
-	$ npm install
+	cd pi-power/dist/server
+	sudo chown -R $(whoami) ./
+	npm install
 
 ##### Generate SSL Cert in root of server
 
-	$ openssl genrsa 1024 > private.key
-	$ openssl req -new -key private.key -out cert.csr
-	$ openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
+	openssl genrsa 1024 > private.key
+	openssl req -new -key private.key -out cert.csr
+	openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
 		
 ##### Generate users.htpasswd file in root of server (this is the password to login to the web)
 
-	$ sudo apt-get install apache2-utils
-	$ htpasswd -c users.htpasswd admin
+	sudo apt-get install apache2-utils
+	htpasswd -c users.htpasswd admin
 
 ##### Set up your pin configuration
 
 Copy server/config.example.json file and create a server/config.json file
 
-    $ cp config.example.json config.json
+    cp config.example.json config.json
 
 ##### Launch Server
 
-    $ sudo node ~/pi-power/dist/server/app.js
+    sudo node ~/pi-power/dist/server/app.js
 
 If you get a sudo node error then you need to install a version of node globally. This is because we are using nvm to install node.
 https://www.digitalocean.com/community/tutorials/how-to-install-node-js-with-nvm-node-version-manager-on-a-vps#-installing-nodejs-on-a-vps
@@ -191,22 +190,22 @@ Comfigureable Notifications
 
 ##### Clone the repository
 
-    $ sudo git clone https://github.com/jfarago/piPower.git piPower
+    sudo git clone https://github.com/jfarago/piPower.git piPower
     
 ##### Install package dependancies
 
-    $ cd piPower/
-    $ npm install
+    cd piPower/
+    npm install
     
 ##### Create dist package
     
-	$ npm run build
+	npm run build
 	
 ##### Create proxy config
 
 The proxy is to be able to serve the webpages locally, but point to the pi for server requests
     
-	$ cp proxy.conf.example.json proxy.conf.json
+	cp proxy.conf.example.json proxy.conf.json
 	
 ##### Deploy using filezilla or cyberduck
 
@@ -243,17 +242,17 @@ The proxy is to be able to serve the webpages locally, but point to the pi for s
 #### Run server when pi boots option 2
 
 ```
-$ sudo nano /etc/rc.local
+sudo nano /etc/rc.local
 ```
 
 Add line under "# By default this script does nothing."
 
 ```
-$ /usr/bin/sudo -u pi sudo /usr/local/bin/forever /home/pi/piPower/dist/server/app.js >>/home/pi/piPower/dist/server/output.log 2>>/home/pi/piPower/dist/server/error.log
+/usr/bin/sudo -u pi sudo /usr/local/bin/forever /home/pi/piPower/dist/server/app.js >>/home/pi/piPower/dist/server/output.log 2>>/home/pi/piPower/dist/server/error.log
 ```
 
 Reboot
 ```
-$ sudo reboot
+sudo reboot
 ```
 
