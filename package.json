@@ -22,7 +22,7 @@
     "@angular/router": "^4.0.0",
     "axios": "^0.19.2",
     "@ng-bootstrap/ng-bootstrap": "^2.1.2",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "chart.js": "^2.7.2",
     "core-js": "^2.4.1",
     "ds18x20": "^0.2.0",
